@@ -369,6 +369,11 @@ public class Board {
 				throw new InvalidMoveException("That move is out of bounds");
 			}
 			
+			// if blank, letter must be set
+			if (tp.tile.letter == Tile.blank) {
+				throw new InvalidMoveException("A letter must be chosen for blank tiles");
+			}
+			
 			// if playing across, row must be all the same
 			if (direction == PlayDirection.ACROSS) {
 				if (tp.row != row) {
@@ -423,7 +428,6 @@ public class Board {
 		return playedWords;
 	}
 	
-	// TODO - what about blanks?
 	public int placeTiles(ArrayList<TilePlacement> placements, PlayDirection direction) throws InvalidMoveException {
 		ArrayList<PlayedWord> playedWords = this.getPlayedWords(placements, direction);
 		

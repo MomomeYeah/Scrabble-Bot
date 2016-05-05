@@ -167,6 +167,33 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testWordInDictionaryBlanksValid() throws IOException, InvalidMoveException, ScrabbleException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('C', 1), 7, 6));
+		Tile blank = new Tile(' ', 0);
+		blank.setLetter('A');
+		placement.add(new TilePlacement(blank, 7, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 8));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 4)));
+	}
+	
+	@Test
+	public void testWordInDictionaryBlanksInvalid() throws IOException, InvalidMoveException, ScrabbleException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('C', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile(' ', 0), 7, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 8));
+		
+		exception.expect(InvalidMoveException.class);
+		exception.expectMessage("A letter must be chosen for blank tiles");
+		
+		b.getPlayedWords(placement, PlayDirection.ACROSS);
+	}
+	
+	@Test
 	public void testValidateWordCrosscheckAcrossValid() throws IOException, InvalidMoveException {
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));

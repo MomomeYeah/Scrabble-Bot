@@ -2,6 +2,8 @@ package game;
 
 public class Tile {
 	
+	public static final char blank = ' ';
+	
 	public char letter;
 	public int points;
 	public boolean isBlank;
@@ -9,7 +11,7 @@ public class Tile {
 	public Tile(char letter, int points) {
 		this.letter = letter;
 		this.points = points;
-		this.isBlank = (letter == ' ');
+		this.isBlank = (letter == Tile.blank);
 	}
 	
 	public void setLetter(char letter) throws ScrabbleException {
