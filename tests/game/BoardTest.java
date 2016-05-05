@@ -552,8 +552,6 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
-		System.out.println(playedWords.get(0).word);
-		
 		assertTrue(playedWords.get(0).equals(new PlayedWord("ZOOTIER", 102)));
 	}
 	

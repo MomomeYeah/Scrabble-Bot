@@ -4,10 +4,20 @@ public class Tile {
 	
 	public char letter;
 	public int points;
+	public boolean isBlank;
 	
 	public Tile(char letter, int points) {
 		this.letter = letter;
 		this.points = points;
+		this.isBlank = (letter == ' ');
+	}
+	
+	public void setLetter(char letter) throws ScrabbleException {
+		if (this.isBlank) {
+			this.letter = letter;
+		} else {
+			throw new ScrabbleException("Letter can only be set for blank tiles");
+		}
 	}
 	
 	public String toString() {
