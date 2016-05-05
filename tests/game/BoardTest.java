@@ -83,7 +83,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10)));
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10)));
 	}
 	
 	@Test
@@ -150,7 +150,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 10)));
 	}
 	
 	@Test
@@ -182,9 +182,9 @@ public class BoardTest {
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
 		assertTrue(
-				playedWords.get(0).equals(new PlayedWord("AT", 2), playedWords.get(0)) &&
-				playedWords.get(1).equals(new PlayedWord("TE", 3), playedWords.get(1)) &&
-				playedWords.get(2).equals(new PlayedWord("TEA", 4), playedWords.get(2)));
+				playedWords.get(0).equals(new PlayedWord("AT", 2)) &&
+				playedWords.get(1).equals(new PlayedWord("TE", 3)) &&
+				playedWords.get(2).equals(new PlayedWord("TEA", 4)));
 	}
 	
 	@Test
@@ -222,9 +222,9 @@ public class BoardTest {
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
 		
 		assertTrue(
-				playedWords.get(0).equals(new PlayedWord("AT", 2), playedWords.get(0)) &&
-				playedWords.get(1).equals(new PlayedWord("TE", 3), playedWords.get(1)) &&
-				playedWords.get(2).equals(new PlayedWord("TEA", 4), playedWords.get(2)));
+				playedWords.get(0).equals(new PlayedWord("AT", 2)) &&
+				playedWords.get(1).equals(new PlayedWord("TE", 3)) &&
+				playedWords.get(2).equals(new PlayedWord("TEA", 4)));
 	}
 	
 	@Test
@@ -259,7 +259,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 5), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("CAT", 5)));
 	}
 	
 	@Test
@@ -274,7 +274,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("AT", 2), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("AT", 2)));
 	}
 	
 	@Test
@@ -375,8 +375,8 @@ public class BoardTest {
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
 		assertTrue(
-				playedWords.get(0).equals(new PlayedWord("AA", 3), playedWords.get(0)) && 
-				playedWords.get(1).equals(new PlayedWord("BRA", 6), playedWords.get(1)));
+				playedWords.get(0).equals(new PlayedWord("AA", 3)) && 
+				playedWords.get(1).equals(new PlayedWord("BRA", 6)));
 	}
 	
 	@Test
@@ -398,8 +398,8 @@ public class BoardTest {
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
 		assertTrue(
-				playedWords.get(0).equals(new PlayedWord("SO", 3), playedWords.get(0)) &&
-				playedWords.get(1).equals(new PlayedWord("OWE", 7), playedWords.get(1)));
+				playedWords.get(0).equals(new PlayedWord("SO", 3)) &&
+				playedWords.get(1).equals(new PlayedWord("OWE", 7)));
 	}
 	
 	@Test
@@ -425,7 +425,7 @@ public class BoardTest {
 		
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
 		
-		assertTrue(playedWords.get(0).equals(new PlayedWord("BEINGNESSES", 14), playedWords.get(0)));
+		assertTrue(playedWords.get(0).equals(new PlayedWord("BEINGNESSES", 14)));
 	}
 	
 	@Test
@@ -516,8 +516,8 @@ public class BoardTest {
 		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
 		
 		assertTrue(
-				playedWords.get(0).equals(new PlayedWord("TE", 3), playedWords.get(0)) &&
-				playedWords.get(1).equals(new PlayedWord("EAT", 4), playedWords.get(1)));
+				playedWords.get(0).equals(new PlayedWord("TE", 3)) &&
+				playedWords.get(1).equals(new PlayedWord("EAT", 4)));
 	}
 	
 	@Test
@@ -537,6 +537,24 @@ public class BoardTest {
 		exception.expectMessage("Moves must intersect with at least one other tile");
 		
 		b.getPlayedWords(placement, PlayDirection.DOWN);
+	}
+	
+	@Test
+	public void testBonusValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 7, 3));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 4));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 5));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('I', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 8));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 9));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		System.out.println(playedWords.get(0).word);
+		
+		assertTrue(playedWords.get(0).equals(new PlayedWord("ZOOTIER", 102)));
 	}
 	
 	@Test

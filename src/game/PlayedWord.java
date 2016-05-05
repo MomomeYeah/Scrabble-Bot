@@ -10,8 +10,8 @@ public class PlayedWord {
 		this.score = score;
 	}
 	
-	public boolean equals(PlayedWord one, PlayedWord two) {
-		return one.word.equals(two.word) && one.score == two.score;
+	public boolean equals(PlayedWord other) {
+		return this.word.equals(other.word) && this.score == other.score;
 	}
 
 }

@@ -333,6 +333,10 @@ public class Board {
 		
 		score *= multiplier;
 		
+		if (placements.size() == 7) {
+			score += 50;
+		}
+		
 		return new PlayedWord(fullWord, score);
 	}
 	
