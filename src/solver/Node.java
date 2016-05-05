@@ -7,6 +7,7 @@ public class Node {
 	
 	public static final char root = '_';
 	public static final char EOW = '$';
+	public static final char blank = ' ';
 	
 	public char letter;
 	public HashMap<Character,Node> childrenMap;
@@ -67,6 +68,10 @@ public class Node {
 	}
 	
 	public ArrayList<Node> getChildren(ArrayList<Character> childrenFilter) {
+		if (childrenFilter.contains(Node.blank)) {
+			return this.childrenList;
+		}
+		
 		ArrayList<Node> children = new ArrayList<Node>();
 		for (Node n : this.childrenList) {
 			if (childrenFilter.contains(n.letter) || n.letter == Node.EOW) {

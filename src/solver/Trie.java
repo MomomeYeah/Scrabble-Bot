@@ -80,7 +80,10 @@ public class Trie {
 				words.add("");
 			} else {
 				Character c = rec.letter;
-				childrenFilter.remove(c);
+				if (!childrenFilter.remove(c)) {
+					c = Node.blank;
+					childrenFilter.remove(c);
+				}
 				ArrayList<String> recWords = getWordsRecursive(rec, childrenFilter);
 				for (String s : recWords) {
 					words.add(rec.letter + s);

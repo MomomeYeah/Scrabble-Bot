@@ -26,7 +26,9 @@ public class Solver {
 			tileCharacters.add(t.letter);
 		}
 		
+		long start = System.nanoTime();
 		ArrayList<String> words = s.trie.getWords(tileCharacters);
+		long finish = System.nanoTime();
 		
 		System.out.print("Drew ");
 		for (Character c : tileCharacters) {
@@ -34,10 +36,10 @@ public class Solver {
 		}
 		System.out.println("");
 		
-		System.out.println("Found " + words.size() + " words");
-		for (String word : words) {
+		System.out.println("Found " + words.size() + " words in " + (finish - start)/1000000 + " milliseconds");
+		/*for (String word : words) {
 			System.out.println(word);
-		}
+		}*/
 		
 	}
 
