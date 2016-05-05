@@ -47,16 +47,7 @@ public class Trie {
 	}
 	
 	public ArrayList<String> getWords() {
-		ArrayList<String> words = new ArrayList<String>();
-		
-		for (Node n : this.root.getChildren()) {
-			ArrayList<String> recWords = getWordsRecursive(n);
-			for (String s : recWords) {
-				words.add(n.letter + s);
-			}
-		}
-		
-		return words;
+		return this.getWordsRecursive(this.root);
 	}
 	
 	private ArrayList<String> getWordsRecursive(Node n) {
@@ -78,19 +69,7 @@ public class Trie {
 	
 	// TODO - what about blanks?
 	public ArrayList<String> getWords(ArrayList<Character> childrenFilter) {
-		ArrayList<String> words = new ArrayList<String>();
-		
-		for (Node n : this.root.getChildren(childrenFilter)) {
-			Character c = n.letter;
-			childrenFilter.remove(c);
-			ArrayList<String> recWords = getWordsRecursive(n, childrenFilter);
-			for (String s: recWords) {
-				words.add(n.letter + s);
-			}
-			childrenFilter.add(c);
-		}
-		
-		return words;
+		return this.getWordsRecursive(this.root, childrenFilter);
 	}
 	
 	private ArrayList<String> getWordsRecursive(Node n, ArrayList<Character> childrenFilter) {
