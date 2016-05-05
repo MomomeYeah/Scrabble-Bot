@@ -30,6 +30,10 @@ public class Solver {
 		ArrayList<String> words = s.trie.getWords(tileCharacters);
 		long finish = System.nanoTime();
 		
+		for (String word : words) {
+			System.out.println(word);
+		}
+		
 		System.out.print("Drew ");
 		for (Character c : tileCharacters) {
 			System.out.print(c + " ");
@@ -37,9 +41,6 @@ public class Solver {
 		System.out.println("");
 		
 		System.out.println("Found " + words.size() + " words in " + (finish - start)/1000000 + " milliseconds");
-		/*for (String word : words) {
-			System.out.println(word);
-		}*/
 		
 	}
 
