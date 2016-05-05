@@ -35,6 +35,22 @@ public class Node {
 		return this.childrenMap.containsKey(child);
 	}
 	
+	public boolean containsSuffix(ArrayList<Character> suffix) {
+		Node n = this;
+		for (int i = 0; i < suffix.size(); i++) {
+			n = n.getChild(suffix.get(i));
+			if (n == null) {
+				return false;
+			}
+		}
+		
+		return n.containsKey(Node.EOW);
+	}
+	
+	public Node getChild(char child) {
+		return this.childrenMap.get(child);
+	}
+	
 	public Node addChild(char child) {
 		if (!this.containsKey(child)) {
 			Node n = new Node(child);
@@ -48,6 +64,16 @@ public class Node {
 	
 	public ArrayList<Node> getChildren() {
 		return this.childrenList;
+	}
+	
+	public ArrayList<Node> getChildren(ArrayList<Character> childrenFilter) {
+		ArrayList<Node> children = new ArrayList<Node>();
+		for (Node n : this.childrenList) {
+			if (childrenFilter.contains(n.letter) || n.letter == Node.EOW) {
+				children.add(n);
+			}
+		}
+		return children;
 	}
 	
 	public static void main(String args[]) {
@@ -67,6 +93,17 @@ public class Node {
 		node.addChild('f');
 		
 		node.print();
+		
+		ArrayList<Character> childrenFilter = new ArrayList<Character>();
+		childrenFilter.add('a');
+		childrenFilter.add('c');
+		childrenFilter.add('f');
+		ArrayList<Node> children = node.getChildren(childrenFilter);
+		
+		System.out.println("Selected children are...");
+		for (Node n : children) {
+			System.out.println(n.letter);
+		}
 		
 	}
 	

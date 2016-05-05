@@ -2,6 +2,8 @@ package solver;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import solver.Node;
@@ -38,14 +40,40 @@ public class NodeTest {
 	public void testAddChildContainsKeyPositive() {
 		Node n = new Node('a');
 		n.addChild('b');
-		assertEquals(true, n.containsKey('b'));
+		assertTrue(n.containsKey('b'));
 	}
 	
 	@Test
 	public void testAddChildContainsKeyNegative() {
 		Node n = new Node('a');
 		n.addChild('b');
-		assertEquals(false, n.containsKey('c'));
+		assertFalse(n.containsKey('c'));
+	}
+	
+	@Test
+	public void testContainsSuffixPositive() {
+		Node c = new Node('c');
+		c.addChild('a');
+		c.getChild('a').addChild('r');
+		c.getChild('a').addChild('t');
+		
+		ArrayList<Character> suffix = new ArrayList<Character>();
+		suffix.add('a');
+		suffix.add('r');
+		assertTrue(c.containsSuffix(suffix));
+	}
+	
+	@Test
+	public void testContainsSuffixNegative() {
+		Node c = new Node('c');
+		c.addChild('a');
+		c.getChild('a').addChild('r');
+		c.getChild('a').addChild('t');
+		
+		ArrayList<Character> suffix = new ArrayList<Character>();
+		suffix.add('a');
+		suffix.add('n');
+		assertFalse(c.containsSuffix(suffix));
 	}
 
 }

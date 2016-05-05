@@ -6,37 +6,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class BoardTest {
 	
+	public static Board b;
+	
+	@BeforeClass
+	public static void beforeClass() throws IOException {
+		b = new Board();
+	}
+	
+	@Before
+	public void clearBoard() {
+		b.reset();
+	}
+	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
 	@Test
 	public void testCreateBoardSize() throws IOException {
-		Board b = new Board();
 		assertEquals(15, b.boardsize);
 	}
 	
 	@Test
 	public void testCreateCells() throws IOException {
-		Board b = new Board();
 		assertNotNull(b.cells);
 	}
 	
 	@Test
 	public void testCreateDictionary() throws IOException {
-		Board b = new Board();
 		assertNotNull(b.dictionary);
 	}
 	
 	@Test
 	public void testCreateNoAnchors() throws IOException {
-		Board b = new Board();
-		
 		Object expectedAnchors[] = new Object[1];
 		expectedAnchors[0] = b.cells[b.boardsize / 2][b.boardsize / 2];
 		
@@ -54,7 +63,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateFirstWordOffCentre() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 0, 0));
 		placement.add(new TilePlacement(new Tile('A', 1), 0, 1));
@@ -68,7 +76,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateFirstWordAcrossCentre() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -81,7 +88,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateFirstWordDownCentre() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -94,7 +100,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordMisalignedAcross() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -108,7 +113,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordMisalignedDown() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -122,7 +126,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordDuplicateTile() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -140,7 +143,6 @@ public class BoardTest {
 	
 	@Test
 	public void testWordInDictionary() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -153,7 +155,6 @@ public class BoardTest {
 	
 	@Test
 	public void testWordNotInDictionary() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('T', 1), 7, 6));
 		placement.add(new TilePlacement(new Tile('T', 1), 7, 7));
@@ -167,7 +168,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordCrosscheckAcrossValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -189,7 +189,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordCrosscheckAcrossInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -209,7 +208,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordCrosscheckDownValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -231,7 +229,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordCrosscheckDownInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -251,7 +248,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordAugmentValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 8));
@@ -268,7 +264,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordAugmentPostValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 8));
@@ -284,7 +279,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordAugmentInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 8));
@@ -302,7 +296,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordAugmentPostInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 8));
@@ -319,7 +312,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordOutOfBoundsLeftInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 2));
 		placement.add(new TilePlacement(new Tile('B', 3), 7, 3));
@@ -343,7 +335,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordOutOfBoundsRightInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('B', 3), 7, 8));
@@ -367,7 +358,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordOutOfBoundsLeftValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 2));
 		placement.add(new TilePlacement(new Tile('B', 3), 7, 3));
@@ -391,7 +381,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordOutOfBoundsRightValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('B', 3), 7, 8));
@@ -414,8 +403,33 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testPrefixOnEdgeOfRow() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 5));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('B', 3), 7, 0));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 1));
+		placement.add(new TilePlacement(new Tile('I', 1), 7, 2));
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 3));
+		placement.add(new TilePlacement(new Tile('G', 2), 7, 4));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 9));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 10));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		assertTrue(playedWords.get(0).equals(new PlayedWord("BEINGNESSES", 14), playedWords.get(0)));
+	}
+	
+	@Test
 	public void testValidateWordEmptyWordInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		
 		exception.expect(InvalidMoveException.class);
@@ -426,7 +440,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordLongWordInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
 		placement.add(new TilePlacement(new Tile('B', 3), 7, 8));
@@ -445,7 +458,6 @@ public class BoardTest {
 	
 	@Test
 	public void testCalculateAnchors() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 1), 7, 6));
 		placement.add(new TilePlacement(new Tile('A', 3), 7, 7));
@@ -459,8 +471,6 @@ public class BoardTest {
 		placement.add(new TilePlacement(new Tile('U', 1), 9, 7));
 		placement.add(new TilePlacement(new Tile('S', 1), 10, 7));
 		b.placeTiles(placement, PlayDirection.DOWN);
-		
-		b.print();
 		
 		Object expectedAnchors[] = new Object[14];
 		expectedAnchors[0] = b.cells[4][7];
@@ -492,7 +502,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordDoesIntersectValid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -513,7 +522,6 @@ public class BoardTest {
 	
 	@Test
 	public void testValidateWordDoesIntersectInvalid() throws IOException, InvalidMoveException {
-		Board b = new Board();
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
 		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
@@ -529,6 +537,178 @@ public class BoardTest {
 		exception.expectMessage("Moves must intersect with at least one other tile");
 		
 		b.getPlayedWords(placement, PlayDirection.DOWN);
+	}
+	
+	@Test
+	public void testPrefixForDirectionValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
+		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> prefix = b.getPrefixForDirection(7, 9, PlayDirection.ACROSS);
+		
+		ArrayList<Character> expectedPrefix = new ArrayList<Character>();
+		expectedPrefix.add('C');
+		expectedPrefix.add('A');
+		expectedPrefix.add('T');
+		
+		assertArrayEquals(expectedPrefix.toArray(), prefix.toArray());
+	}
+	
+	@Test
+	public void testPrefixForDirectionBoardEdgeValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 5));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('B', 3), 7, 0));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 1));
+		placement.add(new TilePlacement(new Tile('I', 1), 7, 2));
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 3));
+		placement.add(new TilePlacement(new Tile('G', 2), 7, 4));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> prefix = b.getPrefixForDirection(7, 9, PlayDirection.ACROSS);
+		
+		ArrayList<Character> expectedPrefix = new ArrayList<Character>();
+		expectedPrefix.add('B');
+		expectedPrefix.add('E');
+		expectedPrefix.add('I');
+		expectedPrefix.add('N');
+		expectedPrefix.add('G');
+		expectedPrefix.add('N');
+		expectedPrefix.add('E');
+		expectedPrefix.add('S');
+		expectedPrefix.add('S');
+		
+		assertArrayEquals(expectedPrefix.toArray(), prefix.toArray());
+	}
+	
+	@Test
+	public void testPrefixForDirectionEdgeOfBoardValid() throws IOException, InvalidMoveException {
+		ArrayList<Character> prefix = b.getPrefixForDirection(7, 0, PlayDirection.ACROSS);
+		ArrayList<Character> expectedPrefix = new ArrayList<Character>();
+		
+		assertArrayEquals(expectedPrefix.toArray(), prefix.toArray());
+	}
+	
+	@Test
+	public void testSuffixForDirectionValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('C', 3), 7, 6));
+		placement.add(new TilePlacement(new Tile('A', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> suffix = b.getSuffixForDirection(7, 5, PlayDirection.ACROSS);
+		
+		ArrayList<Character> expectedSuffix = new ArrayList<Character>();
+		expectedSuffix.add('C');
+		expectedSuffix.add('A');
+		expectedSuffix.add('T');
+		
+		assertArrayEquals(expectedSuffix.toArray(), suffix.toArray());
+	}
+	
+	@Test
+	public void testSuffixForDirectionBoardEdgeValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('B', 3), 7, 6));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('I', 1), 7, 8));
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 9));
+		placement.add(new TilePlacement(new Tile('G', 2), 7, 10));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('N', 1), 7, 11));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 12));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 13));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 14));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> suffix = b.getSuffixForDirection(7, 5, PlayDirection.ACROSS);
+		
+		ArrayList<Character> expectedSuffix = new ArrayList<Character>();
+		expectedSuffix.add('B');
+		expectedSuffix.add('E');
+		expectedSuffix.add('I');
+		expectedSuffix.add('N');
+		expectedSuffix.add('G');
+		expectedSuffix.add('N');
+		expectedSuffix.add('E');
+		expectedSuffix.add('S');
+		expectedSuffix.add('S');
+		
+		assertArrayEquals(expectedSuffix.toArray(), suffix.toArray());
+	}
+	
+	@Test
+	public void testSuffixForDirectionEdgeOfBoardValid() throws IOException, InvalidMoveException {
+		ArrayList<Character> suffix = b.getPrefixForDirection(7, 14, PlayDirection.ACROSS);
+		ArrayList<Character> expectedSuffix = new ArrayList<Character>();
+		
+		assertArrayEquals(expectedSuffix.toArray(), suffix.toArray());
+	}
+	
+	@Test
+	public void testCalculateCrossChecksAcrossValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 7, 6));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> ccAcross = b.cells[7][9].getValidCrossChecksAcross();
+		
+		ArrayList<Character> expectedCrossChecks = new ArrayList<Character>();
+		expectedCrossChecks.add('B');
+		expectedCrossChecks.add('C');
+		expectedCrossChecks.add('D');
+		expectedCrossChecks.add('E');
+		expectedCrossChecks.add('G');
+		expectedCrossChecks.add('I');
+		expectedCrossChecks.add('K');
+		expectedCrossChecks.add('L');
+		expectedCrossChecks.add('M');
+		expectedCrossChecks.add('N');
+		expectedCrossChecks.add('P');
+		expectedCrossChecks.add('S');
+		expectedCrossChecks.add('T');
+		expectedCrossChecks.add('X');
+		expectedCrossChecks.add('Z');
+		
+		assertArrayEquals(expectedCrossChecks.toArray(), ccAcross.toArray());
+	}
+	
+	@Test
+	public void testCalculateCrossChecksDownValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 6, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 8, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 9, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		ArrayList<Character> ccDown = b.cells[10][7].getValidCrossChecksDown();
+		
+		ArrayList<Character> expectedCrossChecks = new ArrayList<Character>();
+		expectedCrossChecks.add('A');
+		expectedCrossChecks.add('E');
+		expectedCrossChecks.add('H');
+		expectedCrossChecks.add('I');
+		expectedCrossChecks.add('O');
+		expectedCrossChecks.add('R');
+		expectedCrossChecks.add('S');
+		expectedCrossChecks.add('Y');
+		
+		assertArrayEquals(expectedCrossChecks.toArray(), ccDown.toArray());
 	}
 	
 }

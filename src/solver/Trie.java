@@ -76,6 +76,76 @@ public class Trie {
 		return words;
 	}
 	
+	// TODO - what about blanks?
+	public ArrayList<String> getWords(ArrayList<Character> childrenFilter) {
+		ArrayList<String> words = new ArrayList<String>();
+		
+		for (Node n : this.root.getChildren(childrenFilter)) {
+			Character c = n.letter;
+			childrenFilter.remove(c);
+			ArrayList<String> recWords = getWordsRecursive(n, childrenFilter);
+			for (String s: recWords) {
+				words.add(n.letter + s);
+			}
+			childrenFilter.add(c);
+		}
+		
+		return words;
+	}
+	
+	private ArrayList<String> getWordsRecursive(Node n, ArrayList<Character> childrenFilter) {
+		ArrayList<String> words = new ArrayList<String>();
+		
+		for (Node rec : n.getChildren(childrenFilter)) {
+			if (rec.letter == Node.EOW) {
+				words.add("");
+			} else {
+				Character c = rec.letter;
+				childrenFilter.remove(c);
+				ArrayList<String> recWords = getWordsRecursive(rec, childrenFilter);
+				for (String s : recWords) {
+					words.add(rec.letter + s);
+				}
+				childrenFilter.add(c);
+			}
+		}
+		
+		return words;
+	}
+	
+	public ArrayList<Character> getValidLettersFromPrefixandSuffix(ArrayList<Character> prefix, ArrayList<Character> suffix) {
+		ArrayList<Character> validLetters = new ArrayList<Character>();
+		
+		Node n = this.root;
+		while (prefix.size() > 0 && n != null) {
+			n = n.getChild(prefix.remove(0));
+		}
+		
+		// if we get through part or all of the prefix and there are no nodes left
+		// there must be no valid letters we can return
+		if (n == null) {
+			return validLetters;
+		}
+		
+		// if there's no suffix, just return all children of the letter letter of the prefix
+		if (suffix.size() == 0) {
+			for (Node child : n.getChildren()) {
+				if (child.letter != Node.EOW) {
+					validLetters.add(child.letter);
+				}
+			}
+		// if there is a suffix, return all children that have the given suffix as a suffix
+		} else {
+			for (Node poss : n.getChildren()) {
+				if (poss.containsSuffix(suffix) && poss.letter != Node.EOW) {
+					validLetters.add(poss.letter);
+				}
+			}
+		}
+		
+		return validLetters;
+	}
+	
 	public static void main(String args[]) {
 		
 		Trie t = new Trie();
