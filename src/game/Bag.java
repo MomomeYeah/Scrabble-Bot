@@ -51,6 +51,10 @@ public class Bag {
 		return this.tiles.size() == 0;
 	}
 	
+	public int getTileCount() {
+		return this.tiles.size();
+	}
+	
 	public Tile drawOne() {
 		return this.tiles.remove(this.tiles.size() - 1);
 	}
@@ -68,6 +72,18 @@ public class Bag {
 	
 	public ArrayList<Tile> draw() {
 		return this.draw(7);
+	}
+	
+	public void replace(ArrayList<Tile> tiles)  {
+		this.tiles.addAll(tiles);
+		Collections.shuffle(this.tiles);
+	}
+	
+	public ArrayList<Tile> exchange(ArrayList<Tile> tiles) {
+		int numTiles = tiles.size();
+		
+		this.replace(tiles);
+		return this.draw(numTiles);
 	}
 	
 	public static void main(String args[]) throws IOException {
