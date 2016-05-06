@@ -107,6 +107,7 @@ public class Solver {
 			}
 			System.out.print(" for a score of ");
 			System.out.println(board.placeTiles(placements, PlayDirection.ACROSS));
+			board.print();
 		} else {
 			System.out.println("No words found, not playing");
 		}

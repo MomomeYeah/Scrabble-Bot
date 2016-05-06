@@ -71,10 +71,13 @@ public class Board {
 		String ret = "";
 		for (int row = 0; row < this.boardsize; row++) {
 			for (int column = 0; column < this.boardsize; column++) {
-				if (this.cells[row][column].getTile() != null) {
-					ret += this.cells[row][column].getTile().letter + " ";
+				Cell c = this.cells[row][column];
+				if (c.isAnchor()) {
+					ret += "* ";
+				} else if (c.getTile() != null) {
+					ret += c.getTile().letter + " ";
 				} else {
-					ret += this.cells[row][column].getCellType().toString();
+					ret += c.getCellType().toString();
 				}
 			}
 			ret += System.lineSeparator();
