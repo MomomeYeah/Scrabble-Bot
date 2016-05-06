@@ -46,13 +46,6 @@ public class Solver {
 			
 		}
 		
-		System.out.print("Playing ");
-		for (TilePlacement tp : placements) {
-			System.out.print(tp.tile.letter);
-		}
-		System.out.print(" for " + bestScore + " points.");
-		System.out.println("");
-		
 		return placements;
 	}
 	
@@ -107,7 +100,16 @@ public class Solver {
 		}
 		System.out.println("");
 		
-		System.out.println("Played tiles, got score of " + board.placeTiles(placements, PlayDirection.ACROSS));
+		if (placements.size() > 0) {
+			System.out.print("Playing ");
+			for (TilePlacement tp : placements) {
+				System.out.print(tp.tile.letter);
+			}
+			System.out.print(" for a score of ");
+			System.out.println(board.placeTiles(placements, PlayDirection.ACROSS));
+		} else {
+			System.out.println("No words found, not playing");
+		}
 		
 	}
 
