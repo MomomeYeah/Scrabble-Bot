@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import game.ScrabbleException;
+import game.Tile;
+
 public class Trie {
 
 	public Node root;
@@ -67,27 +70,34 @@ public class Trie {
 		return words;
 	}
 	
-	public ArrayList<String> getWords(ArrayList<Character> childrenFilter) {
+	public ArrayList<ArrayList<Tile>> getWords(ArrayList<Tile> childrenFilter) throws ScrabbleException {
 		return this.getWordsRecursive(this.root, childrenFilter);
 	}
 	
-	private ArrayList<String> getWordsRecursive(Node n, ArrayList<Character> childrenFilter) {
-		ArrayList<String> words = new ArrayList<String>();
+	private ArrayList<ArrayList<Tile>> getWordsRecursive(Node n, ArrayList<Tile> childrenFilter) throws ScrabbleException {
+		ArrayList<ArrayList<Tile>> words = new ArrayList<ArrayList<Tile>>();
 		
 		for (Node rec : n.getChildren(childrenFilter)) {
 			if (rec.letter == Node.EOW) {
-				words.add("");
+				words.add(new ArrayList<Tile>());
 			} else {
-				Character c = rec.letter;
-				if (!childrenFilter.remove(c)) {
-					c = Node.blank;
-					childrenFilter.remove(c);
+				Tile t = Tile.remove(childrenFilter, rec.letter);
+				if (t == null) {
+					t = Tile.remove(childrenFilter, Node.blank);
+					t.setLetter(rec.letter);
 				}
-				ArrayList<String> recWords = getWordsRecursive(rec, childrenFilter);
-				for (String s : recWords) {
-					words.add(rec.letter + s);
+				ArrayList<ArrayList<Tile>> recWords = getWordsRecursive(rec, childrenFilter);
+				for (ArrayList<Tile> word : recWords) {
+					word.add(0, t);
+					words.add(word);
 				}
-				childrenFilter.add(c);
+				if (t.isBlank) {
+					Tile copy = t.copy();
+					copy.setLetter(Tile.blank);
+					childrenFilter.add(copy);
+				} else {
+					childrenFilter.add(t);
+				}
 			}
 		}
 		

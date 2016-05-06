@@ -3,6 +3,8 @@ package solver;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import game.Tile;
+
 public class Node {
 	
 	public static final char root = '_';
@@ -67,17 +69,18 @@ public class Node {
 		return this.childrenList;
 	}
 	
-	public ArrayList<Node> getChildren(ArrayList<Character> childrenFilter) {
-		if (childrenFilter.contains(Node.blank)) {
+	public ArrayList<Node> getChildren(ArrayList<Tile> childrenFilter) {
+		if (Tile.contains(childrenFilter, Node.blank)) {
 			return this.childrenList;
 		}
 		
 		ArrayList<Node> children = new ArrayList<Node>();
 		for (Node n : this.childrenList) {
-			if (childrenFilter.contains(n.letter) || n.letter == Node.EOW) {
+			if (Tile.contains(childrenFilter, n.letter) || n.letter == Node.EOW) {
 				children.add(n);
 			}
 		}
+		
 		return children;
 	}
 	
@@ -99,10 +102,10 @@ public class Node {
 		
 		node.print();
 		
-		ArrayList<Character> childrenFilter = new ArrayList<Character>();
-		childrenFilter.add('a');
-		childrenFilter.add('c');
-		childrenFilter.add('f');
+		ArrayList<Tile> childrenFilter = new ArrayList<Tile>();
+		childrenFilter.add(new Tile('a', 1));
+		childrenFilter.add(new Tile('c', 3));
+		childrenFilter.add(new Tile('f', 4));
 		ArrayList<Node> children = node.getChildren(childrenFilter);
 		
 		System.out.println("Selected children are...");

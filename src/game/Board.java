@@ -428,13 +428,19 @@ public class Board {
 		return playedWords;
 	}
 	
-	public int placeTiles(ArrayList<TilePlacement> placements, PlayDirection direction) throws InvalidMoveException {
+	public int getScore(ArrayList<TilePlacement> placements, PlayDirection direction) throws InvalidMoveException {
 		ArrayList<PlayedWord> playedWords = this.getPlayedWords(placements, direction);
 		
 		int score = 0;
 		for (PlayedWord pw : playedWords) {
 			score += pw.score;
 		}
+		
+		return score;
+	}
+	
+	public int placeTiles(ArrayList<TilePlacement> placements, PlayDirection direction) throws InvalidMoveException {
+		int score = this.getScore(placements, direction);
 		
 		for (TilePlacement tp : placements) {
 			this.cells[tp.row][tp.column].placeTile(tp.tile);
