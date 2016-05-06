@@ -67,7 +67,6 @@ public class Trie {
 		return words;
 	}
 	
-	// TODO - what about blanks?
 	public ArrayList<String> getWords(ArrayList<Character> childrenFilter) {
 		return this.getWordsRecursive(this.root, childrenFilter);
 	}
