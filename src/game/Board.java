@@ -255,9 +255,12 @@ public class Board {
 							cell.setIsAnchor(true);
 							this.anchors.add(cell);
 							calculateCrossChecksDown(row, column);
-						} else if (this.hasEastWestNeighbors(row, column)) {
+						} 
+						if (this.hasEastWestNeighbors(row, column)) {
 							cell.setIsAnchor(true);
-							this.anchors.add(cell);
+							if (!this.anchors.contains(cell)) {
+								this.anchors.add(cell);
+							}
 							calculateCrossChecksAcross(row, column);
 						}
 					}
