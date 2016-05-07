@@ -22,6 +22,36 @@ public class TileTest {
 	}
 	
 	@Test
+	public void testEqualsValid() {
+		Tile t = new Tile('A', 1);
+		
+		assertTrue(t.equals(new Tile('A', 1)));
+	}
+	
+	@Test
+	public void testEqualsBlankValid() {
+		Tile t = new Tile(' ', 0);
+		
+		assertTrue(t.equals(new Tile(' ', 0)));
+	}
+	
+	@Test
+	public void testEqualsInvalid() {
+		Tile t = new Tile('A', 1);
+		
+		assertFalse(t.equals(new Tile('B', 3)));
+	}
+	
+	@Test
+	public void testEqualsBlankInvalid() throws ScrabbleException {
+		Tile t = new Tile(' ', 0);
+		Tile tOther = new Tile(' ', 0);
+		tOther.setLetter('B');
+		
+		assertFalse(t.equals(tOther));
+	}
+	
+	@Test
 	public void testSetLetterInvalid() throws ScrabbleException {
 		Tile t = new Tile('B', 0);
 		

@@ -13,6 +13,7 @@ public class Board {
 	public int boardsize;
 	public boolean wordsPlayed;
 	public Cell[][] cells;
+	public ArrayList<Cell> anchors;
 	public HashSet<String> dictionary;
 	public Trie trie;
 	
@@ -20,17 +21,18 @@ public class Board {
 		this.boardsize = 15;
 		this.wordsPlayed = false;
 		this.cells = new Cell[this.boardsize][this.boardsize];
+		this.anchors = new ArrayList<Cell>();
 		
 		int row = 0, column = 0;
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader("initialboard.txt"));
 			String line = "";
-			String cells[] = new String[this.boardsize];
+			String boardCells[] = new String[this.boardsize];
 			while ((line = br.readLine()) != null) {
-				cells = line.split(",");
+				boardCells = line.split(",");
 				for (column = 0; column < this.boardsize; column++) {
-					this.cells[row][column] = new Cell(cells[column]);
+					this.cells[row][column] = new Cell(row, column, boardCells[column]);
 				}
 				row++;
 			}
@@ -236,24 +238,29 @@ public class Board {
 	}
 	
 	public void calculateAnchorsAndCrossChecks() {
+		this.anchors.clear();
+		
 		if (!this.wordsPlayed) {
-			this.cells[this.boardsize / 2][this.boardsize / 2].setIsAnchor(true);
+			Cell cell = this.cells[this.boardsize / 2][this.boardsize / 2];
+			cell.setIsAnchor(true);
+			this.anchors.add(cell);
 		} else {
 			for (int row = 0; row < this.boardsize; row++) {
 				for (int column = 0; column < this.boardsize; column++) {
-					boolean isAnchor = false;
-					this.cells[row][column].clearCrossChecks();
-					if (this.cells[row][column].isEmpty()) {
+					Cell cell = this.cells[row][column];
+					cell.clearCrossChecks();
+					cell.setIsAnchor(false);
+					if (cell.isEmpty()) {
 						if (this.hasNorthSouthNeighbors(row, column)) {
-							isAnchor = true;
+							cell.setIsAnchor(true);
+							this.anchors.add(cell);
 							calculateCrossChecksDown(row, column);
 						} else if (this.hasEastWestNeighbors(row, column)) {
-							isAnchor = true;
+							cell.setIsAnchor(true);
+							this.anchors.add(cell);
 							calculateCrossChecksAcross(row, column);
 						}
 					}
-					
-					this.cells[row][column].setIsAnchor(isAnchor);
 				}
 			}
 		}

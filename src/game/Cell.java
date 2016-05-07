@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Cell {
 	
+	private int row;
+	private int column;
 	private CellType celltype;
 	private boolean hasTile;
 	private Tile tile;
@@ -11,7 +13,9 @@ public class Cell {
 	private ArrayList<Character> validCrossChecksAcross;
 	private ArrayList<Character> validCrossChecksDown;
 	
-	public Cell(CellType celltype) {
+	public Cell(int row, int column, CellType celltype) {
+		this.row = row;
+		this.column = column;
 		this.celltype = celltype;
 		this.hasTile = false;
 		this.tile = null;
@@ -20,8 +24,8 @@ public class Cell {
 		this.validCrossChecksDown = new ArrayList<Character>();
 	}
 	
-	public Cell(String celltype) {
-		this(new CellType(celltype));
+	public Cell(int row, int column, String celltype) {
+		this(row, column, new CellType(celltype));
 	}
 	
 	public void reset() {
@@ -30,6 +34,14 @@ public class Cell {
 		this.isAnchor = false;
 		this.validCrossChecksAcross.clear();
 		this.validCrossChecksDown.clear();
+	}
+	
+	public int getRow() {
+		return this.row;
+	}
+	
+	public int getColumn() {
+		return this.column;
 	}
 	
 	public CellType getCellType() {

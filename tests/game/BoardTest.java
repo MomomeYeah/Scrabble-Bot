@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -40,6 +39,36 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testCreateCellRowZero() throws IOException {
+		assertEquals(0, b.cells[0][1].getRow());
+	}
+	
+	@Test
+	public void testCreateCellRowMid() throws IOException {
+		assertEquals(7, b.cells[7][8].getRow());
+	}
+	
+	@Test
+	public void testCreateCellRowMax() throws IOException {
+		assertEquals(b.boardsize - 1, b.cells[b.boardsize - 1][b.boardsize - 2].getRow());
+	}
+	
+	@Test
+	public void testCreateCellColumnZero() throws IOException {
+		assertEquals(1, b.cells[0][1].getColumn());
+	}
+	
+	@Test
+	public void testCreateCellColumnMid() throws IOException {
+		assertEquals(8, b.cells[7][8].getColumn());
+	}
+	
+	@Test
+	public void testCreateCellColumnMax() throws IOException {
+		assertEquals(b.boardsize - 2, b.cells[b.boardsize - 1][b.boardsize - 2].getColumn());
+	}
+	
+	@Test
 	public void testCreateDictionary() throws IOException {
 		assertNotNull(b.dictionary);
 	}
@@ -58,7 +87,7 @@ public class BoardTest {
 			}
 		}
 		
-		Assert.assertArrayEquals(expectedAnchors, anchors.toArray());
+		assertArrayEquals(expectedAnchors, anchors.toArray());
 	}
 	
 	@Test
@@ -524,7 +553,28 @@ public class BoardTest {
 			}
 		}
 		
-		Assert.assertArrayEquals(expectedAnchors, anchors.toArray());
+		assertArrayEquals(expectedAnchors, anchors.toArray());
+	}
+	
+	@Test
+	public void testGetAnchorsValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('C', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('A', 3), 7, 7));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		Object expectedAnchors[] = new Object[8];
+		expectedAnchors[0] = b.cells[6][6];
+		expectedAnchors[1] = b.cells[6][7];
+		expectedAnchors[2] = b.cells[6][8];
+		expectedAnchors[3] = b.cells[7][5];
+		expectedAnchors[4] = b.cells[7][9];
+		expectedAnchors[5] = b.cells[8][6];
+		expectedAnchors[6] = b.cells[8][7];
+		expectedAnchors[7] = b.cells[8][8];
+		
+		assertArrayEquals(expectedAnchors, b.anchors.toArray());
 	}
 	
 	@Test

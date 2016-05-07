@@ -20,6 +20,10 @@ public class Tile {
 		this(letter, points, letter == Tile.blank);
 	}
 	
+	public boolean equals(Tile other) {
+		return this.letter == other.letter && this.points == other.points && this.isBlank == other.isBlank;
+	}
+	
 	public void setLetter(char letter) throws ScrabbleException {
 		if (this.isBlank) {
 			this.letter = letter;
