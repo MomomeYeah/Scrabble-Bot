@@ -118,10 +118,10 @@ public class Trie {
 			return validLetters;
 		}
 		
-		// if there's no suffix, just return all children of the letter letter of the prefix
+		// if there's no suffix, just return all children of the prefix that have EOW as a child
 		if (suffix.size() == 0) {
 			for (Node child : n.getChildren()) {
-				if (child.letter != Node.EOW) {
+				if (child.letter != Node.EOW && child.containsKey(Node.EOW)) {
 					validLetters.add(child.letter);
 				}
 			}
