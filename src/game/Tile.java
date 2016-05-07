@@ -24,6 +24,14 @@ public class Tile {
 		return this.letter == other.letter && this.points == other.points && this.isBlank == other.isBlank;
 	}
 	
+	public boolean equalsOrBlank(Tile other) {
+		if (this.letter == other.letter && this.points == other.points) {
+			return true;
+		} else {
+			return other.isBlank;
+		}
+	}
+	
 	public void setLetter(char letter) throws ScrabbleException {
 		if (this.isBlank) {
 			this.letter = letter;
