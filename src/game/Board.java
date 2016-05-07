@@ -116,10 +116,10 @@ public class Board {
 	}
 	
 	public boolean hasNorthSouthNeighbors(int row, int column) {
-		if (row > 0 && !this.cells[row-1][column].isEmpty()) {
+		if (row > 0 && !this.cells[row - 1][column].isEmpty()) {
 			return true;
 		}
-		if (row < this.boardsize - 1 && !this.cells[row+1][column].isEmpty()) {
+		if (row < this.boardsize - 1 && !this.cells[row + 1][column].isEmpty()) {
 			return true;
 		}
 		
@@ -127,10 +127,10 @@ public class Board {
 	}
 	
 	public boolean hasEastWestNeighbors(int row, int column) {
-		if (column > 0 && !this.cells[row][column-1].isEmpty()) {
+		if (column > 0 && !this.cells[row][column - 1].isEmpty()) {
 			return true;
 		}
-		if (column < this.boardsize - 1 && !this.cells[row][column+1].isEmpty()) {
+		if (column < this.boardsize - 1 && !this.cells[row][column + 1].isEmpty()) {
 			return true;
 		}
 		
@@ -411,10 +411,10 @@ public class Board {
 			
 			// check intersection words
 			boolean intersects = false;
-			if (direction == PlayDirection.ACROSS && !this.cells[tp.row - 1][tp.column].isEmpty()) {
+			if (direction == PlayDirection.ACROSS && this.hasNorthSouthNeighbors(tp.row, tp.column)) {
 				intersects = true;
 			}
-			if (direction == PlayDirection.DOWN && !this.cells[tp.row][tp.column - 1].isEmpty()) {
+			if (direction == PlayDirection.DOWN && this.hasEastWestNeighbors(tp.row, tp.column)) {
 				intersects = true;
 			}
 			if (intersects) {

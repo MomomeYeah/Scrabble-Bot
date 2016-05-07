@@ -864,4 +864,52 @@ public class BoardTest {
 		assertArrayEquals(expectedCrossChecks.toArray(), ccDown.toArray());
 	}
 	
+	@Test
+	public void testPlayedWordRowZeroValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('H', 4), 1, 7));
+		placement.add(new TilePlacement(new Tile('U', 1), 2, 7));
+		placement.add(new TilePlacement(new Tile('M', 3), 3, 7));
+		placement.add(new TilePlacement(new Tile('P', 3), 4, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 5, 7));
+		placement.add(new TilePlacement(new Tile('R', 1), 6, 7));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('H', 4), 0, 5));
+		placement.add(new TilePlacement(new Tile('U', 1), 0, 6));
+		placement.add(new TilePlacement(new Tile('T', 1), 0, 7));
+
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		assertTrue(
+				playedWords.get(0).equals(new PlayedWord("THUMPERS", 45)) &&
+				playedWords.get(1).equals(new PlayedWord("HUT", 18)));
+	}
+	
+	@Test
+	public void testPlayedWordColumnZeroValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('H', 4), 7, 1));
+		placement.add(new TilePlacement(new Tile('U', 1), 7, 2));
+		placement.add(new TilePlacement(new Tile('M', 3), 7, 3));
+		placement.add(new TilePlacement(new Tile('P', 3), 7, 4));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 5));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('S', 1), 7, 7));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('H', 4), 5, 0));
+		placement.add(new TilePlacement(new Tile('U', 1), 6, 0));
+		placement.add(new TilePlacement(new Tile('T', 1), 7, 0));
+
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
+		
+		assertTrue(
+				playedWords.get(0).equals(new PlayedWord("THUMPERS", 45)) &&
+				playedWords.get(1).equals(new PlayedWord("HUT", 18)));
+	}
+	
 }
