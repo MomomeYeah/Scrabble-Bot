@@ -832,4 +832,36 @@ public class BoardTest {
 		assertArrayEquals(expectedCrossChecks.toArray(), ccDown.toArray());
 	}
 	
+	@Test
+	public void testCalculateCrossChecksDownTopValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 7, 6));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 8));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		ArrayList<Character> ccDown = b.cells[6][7].getValidCrossChecksDown();
+		
+		ArrayList<Character> expectedCrossChecks = new ArrayList<Character>();
+		expectedCrossChecks.add('B');
+		expectedCrossChecks.add('D');
+		expectedCrossChecks.add('G');
+		expectedCrossChecks.add('H');
+		expectedCrossChecks.add('I');
+		expectedCrossChecks.add('J');
+		expectedCrossChecks.add('K');
+		expectedCrossChecks.add('L');
+		expectedCrossChecks.add('M');
+		expectedCrossChecks.add('N');
+		expectedCrossChecks.add('O');
+		expectedCrossChecks.add('P');
+		expectedCrossChecks.add('S');
+		expectedCrossChecks.add('T');
+		expectedCrossChecks.add('W');
+		expectedCrossChecks.add('Y');
+		expectedCrossChecks.add('Z');
+		
+		assertArrayEquals(expectedCrossChecks.toArray(), ccDown.toArray());
+	}
+	
 }
