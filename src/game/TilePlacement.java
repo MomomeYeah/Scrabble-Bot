@@ -14,6 +14,10 @@ public class TilePlacement {
 		this.column = column;
 	}
 	
+	public boolean equals(TilePlacement other) {
+		return this.tile.equals(other.tile) && this.row == other.row && this.column == other.column;
+	}
+	
 	public static ArrayList<TilePlacement> getPlacements(ArrayList<Tile> tiles, int startingRow, int startingColumn, PlayDirection direction) {
 		ArrayList<TilePlacement> placements = new ArrayList<TilePlacement>();
 

@@ -51,8 +51,6 @@ public class Solver {
 	}
 	
 	private static ArrayList<ArrayList<TilePlacement>> getMoveRecursive(Board b, Cell c, Node n, ArrayList<Tile> hand) throws ScrabbleException {
-		// TODO - test prefixes and suffixes to make sure those behave correctly
-		// TODO - what to do with words that don't intersect?  how to efficiently throw these away?
 		ArrayList<ArrayList<TilePlacement>> words = new ArrayList<ArrayList<TilePlacement>>();
 		
 		if (c.getColumn() == b.boardsize - 1) {
@@ -126,29 +124,47 @@ public class Solver {
 			int column = c.getColumn();
 			int columnMin = column - (hand.size() - 1);
 			
-			// find the left-most point we can start at
-			// do not overlap other anchors in the same row, as that anchor will cover squares both
-			// to the left of it and also itself
-			// if we hit a cell with a tile on it before we hit another anchor, this must be the prefix
-			// immediately next to the cell we're starting on, so include this
-			while (column > 0 && column > columnMin && !b.cells[row][column - 1].isAnchor()) {
-				column--;
+			// find the leftmost point we can start at
+			// do not overlap anchors in the same row as that anchor will 
+			// cover squares both to the left of it and also itself
+			if (column > 0 && b.cells[row][column - 1].isEmpty()) {
+				// if the next leftmost cell is empty, move back as far as we can
+				// up to the limit of the number of tiles in our hand
+				while (column > 0 && column > columnMin && !b.cells[row][column - 1].isAnchor()) {
+					column--;
+				}
+			} else if (column > 0 && !b.cells[row][column - 1].isEmpty()) {
+				// if the next leftmost cell has a tile, this must be the prefix immediately to the
+				// left of the cell we're starting on.  Move left until we hit an anchor
+				while (column > 0 && !b.cells[row][column - 1].isAnchor()) {
+					column--;
+				}
 			}
 			
 			// column variable is now our starting point for extending right
-			// if we are on an empty cell, generate words starting here and ending at
-			// the anchor square we started from
-			// if we are on a cell with a tile, our anchor must have had a prefix, so
+			// if we are on an empty cell, generate all words we can, then shift column
+			// variable to the right and repeat, continuing until we are generating words
+			// starting from the original anchor square.
+			// if we are on a cell with a tile, our anchor must have had a prefix, so 
 			// only generate words starting from this cell
 			int columnMax = b.cells[row][column].isEmpty() ? c.getColumn() : column;
 			while (column <= columnMax) {
-				// get all words we can form starting at (row, column)
+				// get all words we can starting at (row, column)
 				Cell startingCell = b.cells[row][column];
 				
 				ArrayList<ArrayList<TilePlacement>> words = Solver.getMoveRecursive(b, startingCell, rootNode, hand);
 				
 				// for every word that we found...
 				for (ArrayList<TilePlacement> word : words) {
+					
+					// TODO - when playing at end of prefix, prefix will be a valid word, and 
+					//        current algorithm will produce an empty TilePlacement list.  
+					//        Currently we ignore empty placements lists.
+					//        what if we have a bug? need to come up with a way to avoid returning
+					//        an empty placement list when playing after an existing prefix
+					if (word.size() == 0) {
+						continue;
+					}
 					
 					// find out the score this placement would yield...
 					try {
@@ -161,6 +177,12 @@ public class Solver {
 							placements.addAll(word);
 						}
 					} catch (InvalidMoveException e) {
+						// TODO - what to do with words that don't intersect?  
+						//        current algorithm will move left as far as it can and generate 
+						//        all words of all lengths, but these might not reach all the 
+						//        way back to the original anchor cell.
+						//        how to efficiently throw these away without checking against
+						//        exception message?
 						if (!e.getMessage().equals("Moves must intersect with at least one other tile")) {
 							throw e;
 						}
