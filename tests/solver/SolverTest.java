@@ -174,11 +174,6 @@ public class SolverTest {
 		placement.clear();
 		placement = Solver.getMove(b, hand);
 		
-		System.out.println(placement.size());
-		for (TilePlacement tp : placement) {
-			System.out.println(tp.tile.letter + " (" + tp.tile.points + "): " + tp.row + ", " + tp.column);
-		}
-		
 		Tile blankTile = new Tile(' ', 0);
 		blankTile.setLetter('C');
 		
