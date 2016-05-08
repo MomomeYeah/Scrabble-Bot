@@ -108,6 +108,15 @@ public class Trie {
 		ArrayList<Character> validLetters = new ArrayList<Character>();
 		
 		Node n = this.root;
+		
+		// if there is no prefix or suffix, any letter is valid
+		if (prefix.size() == 0 && suffix.size() == 0) {
+			for (Node child : n.getChildren()) {
+				validLetters.add(child.letter);
+			}
+			return validLetters;
+		}
+		
 		while (prefix.size() > 0 && n != null) {
 			n = n.getChild(prefix.remove(0));
 		}

@@ -251,16 +251,10 @@ public class Board {
 					cell.clearCrossChecks();
 					cell.setIsAnchor(false);
 					if (cell.isEmpty()) {
-						if (this.hasNorthSouthNeighbors(row, column)) {
+						if (this.hasNorthSouthNeighbors(row, column) || this.hasEastWestNeighbors(row, column)) {
 							cell.setIsAnchor(true);
 							this.anchors.add(cell);
 							calculateCrossChecksDown(row, column);
-						} 
-						if (this.hasEastWestNeighbors(row, column)) {
-							cell.setIsAnchor(true);
-							if (!this.anchors.contains(cell)) {
-								this.anchors.add(cell);
-							}
 							calculateCrossChecksAcross(row, column);
 						}
 					}

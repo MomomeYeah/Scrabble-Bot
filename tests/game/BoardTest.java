@@ -598,6 +598,32 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testValidateWordTouchesAheadValid() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('B', 3), 3, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 4, 7));
+		placement.add(new TilePlacement(new Tile('S', 1), 5, 7));
+		placement.add(new TilePlacement(new Tile('T', 3), 6, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('D', 1), 8, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 0));
+		placement.add(new TilePlacement(new Tile('V', 4), 7, 1));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 2));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 3));
+		placement.add(new TilePlacement(new Tile('M', 3), 7, 4));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 5));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 6));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		assertTrue(
+				playedWords.get(0).equals(new PlayedWord("EVERMORE", 92)));
+	}
+	
+	@Test
 	public void testValidateWordDoesIntersectInvalid() throws IOException, InvalidMoveException {
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('C', 3), 6, 7));
@@ -858,6 +884,47 @@ public class BoardTest {
 		expectedCrossChecks.add('S');
 		expectedCrossChecks.add('T');
 		expectedCrossChecks.add('W');
+		expectedCrossChecks.add('Y');
+		expectedCrossChecks.add('Z');
+		
+		assertArrayEquals(expectedCrossChecks.toArray(), ccDown.toArray());
+	}
+	
+	@Test
+	public void testCrossChecksEmptyDown() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 6, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 8, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		ArrayList<Character> ccDown = b.cells[6][8].getValidCrossChecksDown();
+		
+		ArrayList<Character> expectedCrossChecks = new ArrayList<Character>();
+		expectedCrossChecks.add('A');
+		expectedCrossChecks.add('B');
+		expectedCrossChecks.add('C');
+		expectedCrossChecks.add('D');
+		expectedCrossChecks.add('E');
+		expectedCrossChecks.add('F');
+		expectedCrossChecks.add('G');
+		expectedCrossChecks.add('H');
+		expectedCrossChecks.add('I');
+		expectedCrossChecks.add('J');
+		expectedCrossChecks.add('K');
+		expectedCrossChecks.add('L');
+		expectedCrossChecks.add('M');
+		expectedCrossChecks.add('N');
+		expectedCrossChecks.add('O');
+		expectedCrossChecks.add('P');
+		expectedCrossChecks.add('Q');
+		expectedCrossChecks.add('R');
+		expectedCrossChecks.add('S');
+		expectedCrossChecks.add('T');
+		expectedCrossChecks.add('U');
+		expectedCrossChecks.add('V');
+		expectedCrossChecks.add('W');
+		expectedCrossChecks.add('X');
 		expectedCrossChecks.add('Y');
 		expectedCrossChecks.add('Z');
 		
