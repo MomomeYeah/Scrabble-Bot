@@ -84,6 +84,34 @@ public class Node {
 		return children;
 	}
 	
+	// childrenFilterHand can contain a blank
+	// childrenFilterCrossCheck can not
+	public ArrayList<Node> getChildren(ArrayList<Tile> childrenFilterHand, ArrayList<Character> childrenFilterCrossCheck) {
+		ArrayList<Node> children = new ArrayList<Node>();
+		
+		// if childrenFilterHand contains a blank, return all Node children in childrenFilterCrossCheck
+		if (Tile.contains(childrenFilterHand, Node.blank)) {
+			for (Node n : this.childrenList) {
+				if (childrenFilterCrossCheck.contains(n.letter) || n.letter == Node.EOW) {
+					children.add(n);
+				}
+			}
+			
+			return children;
+		}
+		
+		// we have no blanks, so return all Node children in both childrenFilters
+		for (Node n : this.childrenList) {
+			if (Tile.contains(childrenFilterHand, n.letter) && childrenFilterCrossCheck.contains(n.letter)) {
+				children.add(n);
+			} else if (n.letter == Node.EOW) {
+				children.add(n);
+			}
+		}
+		
+		return children;
+	}
+	
 	public static void main(String args[]) {
 		
 		Node node = new Node('a');
