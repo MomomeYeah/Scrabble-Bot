@@ -14,13 +14,12 @@ import game.TilePlacement;
 
 public class Solver {
 	
-	// playing ACROSS vs. DOWN makes no difference for the first word
-	// arbitrarily, let's choose to play DOWN
-	public static ArrayList<TilePlacement> getFirstMove(Board b, ArrayList<Tile> hand) throws InvalidMoveException, ScrabbleException {
+	public static ArrayList<TilePlacement> getFirstMove(Board b, ArrayList<Tile> hand, PlayDirection direction) throws InvalidMoveException, ScrabbleException {
 		ArrayList<TilePlacement> placements = new ArrayList<TilePlacement>();
 		
 		ArrayList<ArrayList<Tile>> words = b.trie.getWords(hand);
-		
+
+		int row = b.boardsize / 2;
 		int column = b.boardsize / 2;
 		int score = 0;
 		int bestScore = 0;
@@ -29,12 +28,18 @@ public class Solver {
 		for (ArrayList<Tile> word : words) {	
 			// try it in every possible starting position...
 			int startLoc = (b.boardsize / 2) - (word.size() - 1);
-			for (int row = startLoc; row <= (b.boardsize / 2); row++) {
+			for (int incrementer = startLoc; incrementer <= (b.boardsize / 2); incrementer++) {
 				score = 0;
-				ArrayList<TilePlacement> testPlacements = TilePlacement.getPlacements(word, row, column, PlayDirection.DOWN);
+				ArrayList<TilePlacement> testPlacements = null;
+				
+				if (direction == PlayDirection.ACROSS) {
+					testPlacements = TilePlacement.getPlacements(word, row, incrementer, PlayDirection.ACROSS);
+				} else {
+					testPlacements = TilePlacement.getPlacements(word, incrementer, column, PlayDirection.DOWN);
+				}
 				
 				// find out the score this placement would yield...
-				score = b.getScore(testPlacements, PlayDirection.DOWN);
+				score = b.getScore(testPlacements, direction);
 				
 				// if this is the highest score so far, record this
 				if (score > bestScore) {
@@ -212,6 +217,8 @@ public class Solver {
 		
 		System.out.println("Loaded board in " + (finish - start)/1000000 + " milliseconds");
 		
+		PlayDirection firstMoveDirection = PlayDirection.DOWN;
+		
 		Bag bag = new Bag();
 		bag.shuffle();
 		
@@ -240,7 +247,7 @@ public class Solver {
 		System.out.println("Found " + words.size() + " words in " + (finish - start)/1000000 + " milliseconds");
 		
 		start = System.nanoTime();
-		ArrayList<TilePlacement> placements = Solver.getFirstMove(board, tiles);
+		ArrayList<TilePlacement> placements = Solver.getFirstMove(board, tiles, firstMoveDirection);
 		finish = System.nanoTime();
 
 		System.out.println("Found best word in " + (finish - start)/1000000 + " milliseconds");
@@ -261,7 +268,7 @@ public class Solver {
 				System.out.print(tp.tile.letter);
 			}
 			System.out.print(" for a score of ");
-			System.out.println(board.placeTiles(placements, PlayDirection.DOWN));
+			System.out.println(board.placeTiles(placements, firstMoveDirection));
 			board.print();
 		} else {
 			System.out.println("No words found, not playing");
