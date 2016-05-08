@@ -285,7 +285,7 @@ public class Solver {
 		System.out.println("");
 		
 		start = System.nanoTime();
-		placements = Solver.getMove(board, bag.draw());
+		placements = Solver.getMove(board, tiles);
 		finish = System.nanoTime();
 		
 		System.out.println("Found best word in " + (finish - start)/1000000 + " milliseconds");

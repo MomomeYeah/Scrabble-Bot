@@ -155,4 +155,38 @@ public class SolverTest {
 				);
 	}
 
+	@Test
+	public void testAcrossBlank() throws InvalidMoveException, ScrabbleException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('Z', 10), 3, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 4, 7));
+		placement.add(new TilePlacement(new Tile('O', 1), 5, 7));
+		placement.add(new TilePlacement(new Tile('M', 3), 6, 7));
+		placement.add(new TilePlacement(new Tile('I', 1), 7, 7));
+		placement.add(new TilePlacement(new Tile('N', 1), 8, 7));
+		placement.add(new TilePlacement(new Tile('G', 2), 9, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		ArrayList<Tile> hand = new ArrayList<Tile>();
+		hand.add(new Tile(Tile.blank, 0));
+		hand.add(new Tile('O', 1));
+		
+		placement.clear();
+		placement = Solver.getMove(b, hand);
+		
+		System.out.println(placement.size());
+		for (TilePlacement tp : placement) {
+			System.out.println(tp.tile.letter + " (" + tp.tile.points + "): " + tp.row + ", " + tp.column);
+		}
+		
+		Tile blankTile = new Tile(' ', 0);
+		blankTile.setLetter('C');
+		
+		assertTrue(
+				placement.size() == 2 &&
+				placement.get(0).equals(new TilePlacement(blankTile, 3, 5)) &&
+				placement.get(1).equals(new TilePlacement(new Tile('O', 1), 3, 6))
+				);
+	}
+
 }
