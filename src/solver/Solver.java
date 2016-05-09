@@ -413,7 +413,7 @@ public class Solver {
 			System.out.println("");
 			System.out.println("Bag has " + bag.getTileCount() + " tiles left");
 			
-			// TODO - this sometimes hands here, need to diagnose this
+			// TODO - this sometimes hangs here, need to diagnose this
 			start = System.nanoTime();
 			move = Solver.getMove(board, tiles);
 			finish = System.nanoTime();
