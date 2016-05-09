@@ -75,7 +75,8 @@ public class Board {
 			for (int column = 0; column < this.boardsize; column++) {
 				Cell c = this.cells[row][column];
 				if (c.isAnchor()) {
-					ret += "* ";
+					//ret += "* ";
+					ret += c.getCellType().toString();
 				} else if (c.getTile() != null) {
 					ret += c.getTile().letter + " ";
 				} else {

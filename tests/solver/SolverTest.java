@@ -41,15 +41,17 @@ public class SolverTest {
 		
 		ArrayList<Tile> hand = new ArrayList<Tile>();
 		hand.add(new Tile('D', 2));
-		hand.add(new Tile('O', 1));
+		hand.add(new Tile('A', 1));
+		hand.add(new Tile('K', 5));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
-				placement.size() == 2 &&
-				placement.get(0).equals(new TilePlacement(new Tile('O', 1), 5, 6)) &&
-				placement.get(1).equals(new TilePlacement(new Tile('D', 2), 5, 7))
+				placement.size() == 3 &&
+				placement.get(0).equals(new TilePlacement(new Tile('D', 2), 5, 7)) &&
+				placement.get(1).equals(new TilePlacement(new Tile('A', 1), 5, 8)) &&
+				placement.get(2).equals(new TilePlacement(new Tile('K', 5), 5, 9))
 				);
 	}
 
@@ -64,15 +66,17 @@ public class SolverTest {
 		
 		ArrayList<Tile> hand = new ArrayList<Tile>();
 		hand.add(new Tile('S', 1));
-		hand.add(new Tile('O', 1));
+		hand.add(new Tile('E', 1));
+		hand.add(new Tile('X', 8));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
-				placement.size() == 2 &&
-				placement.get(0).equals(new TilePlacement(new Tile('O', 1), 10, 6)) &&
-				placement.get(1).equals(new TilePlacement(new Tile('S', 1), 10, 7))
+				placement.size() == 3 &&
+				placement.get(0).equals(new TilePlacement(new Tile('S', 1), 10, 6)) &&
+				placement.get(1).equals(new TilePlacement(new Tile('E', 1), 10, 7)) &&
+				placement.get(2).equals(new TilePlacement(new Tile('X', 8), 10, 8))
 				);
 	}
 
@@ -91,7 +95,7 @@ public class SolverTest {
 		hand.add(new Tile('N', 1));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
 				placement.size() == 4 &&
@@ -119,7 +123,7 @@ public class SolverTest {
 		hand.add(new Tile('D', 2));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
 				placement.size() == 1 &&
@@ -143,15 +147,15 @@ public class SolverTest {
 		
 		ArrayList<Tile> hand = new ArrayList<Tile>();
 		hand.add(new Tile('N', 1));
-		hand.add(new Tile('I', 1));
+		hand.add(new Tile('S', 1));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
 				placement.size() == 2 &&
 				placement.get(0).equals(new TilePlacement(new Tile('N', 1), 6, 10)) &&
-				placement.get(1).equals(new TilePlacement(new Tile('I', 1), 6, 11))
+				placement.get(1).equals(new TilePlacement(new Tile('S', 1), 6, 11))
 				);
 	}
 
@@ -167,20 +171,24 @@ public class SolverTest {
 		placement.add(new TilePlacement(new Tile('G', 2), 9, 7));
 		b.placeTiles(placement, PlayDirection.DOWN);
 		
+		Tile blankTile = new Tile(Tile.blank, 0);
+		blankTile.setLetter('A');
+		
 		ArrayList<Tile> hand = new ArrayList<Tile>();
-		hand.add(new Tile(Tile.blank, 0));
-		hand.add(new Tile('O', 1));
+		hand.add(blankTile);
+		hand.add(new Tile('X', 8));
+		hand.add(new Tile('E', 1));
+		hand.add(new Tile('S', 1));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
-		
-		Tile blankTile = new Tile(' ', 0);
-		blankTile.setLetter('C');
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
-				placement.size() == 2 &&
-				placement.get(0).equals(new TilePlacement(blankTile, 3, 5)) &&
-				placement.get(1).equals(new TilePlacement(new Tile('O', 1), 3, 6))
+				placement.size() == 4 &&
+				placement.get(0).equals(new TilePlacement(blankTile, 3, 8)) &&
+				placement.get(1).equals(new TilePlacement(new Tile('X', 8), 3, 9)) &&
+				placement.get(2).equals(new TilePlacement(new Tile('E', 1), 3, 10)) &&
+				placement.get(3).equals(new TilePlacement(new Tile('S', 1), 3, 11))
 				);
 	}
 	
@@ -202,7 +210,7 @@ public class SolverTest {
 		hand.add(new Tile('E', 1));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
 				placement.size() == 3 &&
@@ -230,7 +238,7 @@ public class SolverTest {
 		hand.add(new Tile('U', 1));
 		
 		placement.clear();
-		placement = Solver.getMove(b, hand);
+		placement = Solver.getMove(b, hand).placements;
 		
 		assertTrue(
 				placement.size() == 3 &&
