@@ -216,12 +216,12 @@ public class Solver {
 						if (!e.getMessage().equals("Moves must intersect with at least one other tile")) {
 							throw e;
 						}
-						/*System.out.println("Trying to play...");
-						for (TilePlacement tp : word) {
-							System.out.print(tp.tile.letter);
-						}
-						System.out.println("");
-						System.out.println("Starting from " + row + ", " + column);*/
+						//System.out.println("Trying to play...");
+						//for (TilePlacement tp : word) {
+						//	System.out.print(tp.tile.letter);
+						//}
+						//System.out.println("");
+						//System.out.println("Starting from " + row + ", " + column);
 						//throw e;
 					}
 					
@@ -300,12 +300,12 @@ public class Solver {
 						if (!e.getMessage().equals("Moves must intersect with at least one other tile")) {
 							throw e;
 						}
-						/*System.out.println("Trying to play...");
-						for (TilePlacement tp : word) {
-							System.out.print(tp.tile.letter);
-						}
-						System.out.println("");
-						System.out.println("Starting from " + row + ", " + column);*/
+						//System.out.println("Trying to play...");
+						//for (TilePlacement tp : word) {
+						//	System.out.print(tp.tile.letter);
+						//}
+						//System.out.println("");
+						//System.out.println("Starting from " + row + ", " + column);
 						//throw e;
 					}
 					
@@ -413,7 +413,6 @@ public class Solver {
 			System.out.println("");
 			System.out.println("Bag has " + bag.getTileCount() + " tiles left");
 			
-			// TODO - this sometimes hangs here, need to diagnose this
 			start = System.nanoTime();
 			move = Solver.getMove(board, tiles);
 			finish = System.nanoTime();

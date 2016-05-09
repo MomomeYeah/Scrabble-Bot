@@ -643,6 +643,92 @@ public class BoardTest {
 	}
 	
 	@Test
+	public void testValidateWordAcrossSuffixAtEndOfBoard() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('D', 2), 5, 7));
+		placement.add(new TilePlacement(new Tile('A', 1), 6, 7));
+		placement.add(new TilePlacement(new Tile('Y', 4), 7, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 8, 7));
+		placement.add(new TilePlacement(new Tile('R', 1), 9, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 10, 7));
+		placement.add(new TilePlacement(new Tile('A', 1), 11, 7));
+		placement.add(new TilePlacement(new Tile('M', 3), 12, 7));
+		placement.add(new TilePlacement(new Tile('E', 1), 13, 7));
+		placement.add(new TilePlacement(new Tile('R', 1), 14, 7));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 14, 6));
+		placement.add(new TilePlacement(new Tile('E', 1), 14, 8));
+		placement.add(new TilePlacement(new Tile('A', 1), 14, 9));
+		placement.add(new TilePlacement(new Tile('M', 3), 14, 10));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('L', 1), 14, 11));
+		placement.add(new TilePlacement(new Tile('I', 1), 14, 12));
+		placement.add(new TilePlacement(new Tile('K', 5), 14, 13));
+		placement.add(new TilePlacement(new Tile('E', 1), 14, 14));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 14, 3));
+		placement.add(new TilePlacement(new Tile('A', 1), 14, 4));
+		placement.add(new TilePlacement(new Tile('Y', 4), 14, 5));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.ACROSS);
+		
+		assertTrue(
+				playedWords.get(0).equals(new PlayedWord("DAYDREAMLIKE", 25)));
+	}
+	
+	@Test
+	public void testValidateWordDownSuffixAtEndOfBoard() throws IOException, InvalidMoveException {
+		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
+		placement.add(new TilePlacement(new Tile('D', 2), 7, 5));
+		placement.add(new TilePlacement(new Tile('A', 1), 7, 6));
+		placement.add(new TilePlacement(new Tile('Y', 4), 7, 7));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 7, 8));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 9));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 10));
+		placement.add(new TilePlacement(new Tile('A', 1), 7, 11));
+		placement.add(new TilePlacement(new Tile('M', 3), 7, 12));
+		placement.add(new TilePlacement(new Tile('E', 1), 7, 13));
+		placement.add(new TilePlacement(new Tile('R', 1), 7, 14));
+		b.placeTiles(placement, PlayDirection.ACROSS);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 6, 14));
+		placement.add(new TilePlacement(new Tile('E', 1), 8, 14));
+		placement.add(new TilePlacement(new Tile('A', 1), 9, 14));
+		placement.add(new TilePlacement(new Tile('M', 3), 10, 14));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('L', 1), 11, 14));
+		placement.add(new TilePlacement(new Tile('I', 1), 12, 14));
+		placement.add(new TilePlacement(new Tile('K', 5), 13, 14));
+		placement.add(new TilePlacement(new Tile('E', 1), 14, 14));
+		b.placeTiles(placement, PlayDirection.DOWN);
+		
+		placement.clear();
+		placement.add(new TilePlacement(new Tile('D', 2), 3, 14));
+		placement.add(new TilePlacement(new Tile('A', 1), 4, 14));
+		placement.add(new TilePlacement(new Tile('Y', 4), 5, 14));
+		
+		ArrayList<PlayedWord> playedWords = b.getPlayedWords(placement, PlayDirection.DOWN);
+		
+		assertTrue(
+				playedWords.get(0).equals(new PlayedWord("DAYDREAMLIKE", 25)));
+	}
+	
+	@Test
 	public void testBonusValid() throws IOException, InvalidMoveException {
 		ArrayList<TilePlacement> placement = new ArrayList<TilePlacement>();
 		placement.add(new TilePlacement(new Tile('Z', 10), 7, 3));

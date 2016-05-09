@@ -333,9 +333,17 @@ public class Board {
 			score += this.cells[row][column].getTile().points;
 			
 			if (direction == PlayDirection.ACROSS) {
-				column = this.incrementIfInBounds(column);
+				if (column < this.boardsize - 1) {
+					column++;
+				} else {
+					break;
+				}
 			} else {
-				row = this.incrementIfInBounds(row);
+				if (row < this.boardsize - 1) {
+					row++;
+				} else {
+					break;
+				}
 			}
 		}
 		
