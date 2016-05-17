@@ -15,6 +15,7 @@ import game.PlayDirection;
 import game.ScrabbleException;
 import game.Tile;
 import game.TilePlacement;
+import solver.Solver;
 
 public class SolverTest {
 	

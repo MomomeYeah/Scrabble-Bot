@@ -55,7 +55,10 @@ public class NodeTest {
 		Node c = new Node('c');
 		c.addChild('a');
 		c.getChild('a').addChild('r');
+		c.getChild('a').getChild('r').addChild(Node.EOW);
+		
 		c.getChild('a').addChild('t');
+		c.getChild('a').getChild('t').addChild(Node.EOW);
 		
 		ArrayList<Character> suffix = new ArrayList<Character>();
 		suffix.add('a');

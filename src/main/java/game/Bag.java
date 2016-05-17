@@ -15,7 +15,7 @@ public class Bag {
 		
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("tiles.txt"));
+			br = new BufferedReader(new FileReader("src/main/resources/tiles.txt"));
 			String line = "";
 			String values[] = new String[3];
 			while ((line = br.readLine()) != null) {
@@ -26,7 +26,9 @@ public class Bag {
 			}
 		}
 		finally {
-			br.close();
+			if (br != null) {
+				br.close();
+			}
 		}
 	}
 	

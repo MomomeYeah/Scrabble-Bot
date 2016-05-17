@@ -26,7 +26,7 @@ public class Board {
 		int row = 0, column = 0;
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader("initialboard.txt"));
+			br = new BufferedReader(new FileReader("src/main/resources/initialboard.txt"));
 			String line = "";
 			String boardCells[] = new String[this.boardsize];
 			while ((line = br.readLine()) != null) {
@@ -38,23 +38,28 @@ public class Board {
 			}
 		}
 		finally {
-			br.close();
+			if (br != null) {
+				br.close();
+			}
 		}
 		
+		br = null;
 		this.dictionary = new HashSet<String>();
 		try {
-			br = new BufferedReader(new FileReader("dictionary.txt"));
+			br = new BufferedReader(new FileReader("src/main/resources/dictionary.txt"));
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				this.dictionary.add(line);
 			}
 		}
 		finally {
-			br.close();
+			if (br != null) {
+				br.close();
+			}
 		}
 		
 		this.trie = new Trie();
-		trie.load("dictionary.txt");
+		trie.load("src/main/resources/dictionary.txt");
 		
 		this.calculateAnchorsAndCrossChecks();
 	}

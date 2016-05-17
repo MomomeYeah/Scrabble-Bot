@@ -8,6 +8,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import game.ScrabbleException;
+import game.Tile;
+
 public class TileTest {
 	
 	@Rule

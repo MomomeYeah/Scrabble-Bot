@@ -11,6 +11,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import game.Board;
+import game.Cell;
+import game.InvalidMoveException;
+import game.PlayDirection;
+import game.PlayedWord;
+import game.ScrabbleException;
+import game.Tile;
+import game.TilePlacement;
+
 public class BoardTest {
 	
 	public static Board b;

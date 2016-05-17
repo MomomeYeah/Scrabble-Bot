@@ -12,6 +12,8 @@ import solver.Trie;
 
 public class TrieTest {
 	
+	public static final String dictionaryFile = "src/main/resources/dictionary.txt";
+	
 	@Test
 	public void testCreate() {
 		Trie t = new Trie();
@@ -72,7 +74,7 @@ public class TrieTest {
 	@Test
 	public void getValidLettersNoSuffixPositive() throws IOException {
 		Trie t = new Trie();
-		t.load("dictionary.txt");
+		t.load(dictionaryFile);
 		
 		ArrayList<Character> prefix = new ArrayList<Character>();
 		ArrayList<Character> suffix = new ArrayList<Character>();
@@ -82,7 +84,6 @@ public class TrieTest {
 		ArrayList<Character> validLettersExpected = new ArrayList<Character>();
 		validLettersExpected.add('H');
 		validLettersExpected.add('L');
-		validLettersExpected.add('R');
 		validLettersExpected.add('S');
 
 		ArrayList<Character> validLetters = t.getValidLettersFromPrefixandSuffix(prefix, suffix);
@@ -93,7 +94,7 @@ public class TrieTest {
 	@Test
 	public void getValidLettersNoPrefixPositive() throws IOException {
 		Trie t = new Trie();
-		t.load("dictionary.txt");
+		t.load(dictionaryFile);
 		
 		ArrayList<Character> prefix = new ArrayList<Character>();
 		ArrayList<Character> suffix = new ArrayList<Character>();
@@ -123,7 +124,7 @@ public class TrieTest {
 	@Test
 	public void getValidLettersPositive() throws IOException {
 		Trie t = new Trie();
-		t.load("dictionary.txt");
+		t.load(dictionaryFile);
 		
 		ArrayList<Character> prefix = new ArrayList<Character>();
 		ArrayList<Character> suffix = new ArrayList<Character>();
@@ -145,7 +146,7 @@ public class TrieTest {
 	@Test
 	public void getValidLettersNoResultsPositive() throws IOException {
 		Trie t = new Trie();
-		t.load("dictionary.txt");
+		t.load(dictionaryFile);
 		
 		ArrayList<Character> prefix = new ArrayList<Character>();
 		ArrayList<Character> suffix = new ArrayList<Character>();

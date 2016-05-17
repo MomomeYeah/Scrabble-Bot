@@ -4,6 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import game.Cell;
+import game.CellType;
+import game.Tile;
+
 public class CellTest {
 	
 	@Test

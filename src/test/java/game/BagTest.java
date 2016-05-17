@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import game.Bag;
+import game.Tile;
+
 public class BagTest {
 
 	@Test
