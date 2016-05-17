@@ -14,6 +14,8 @@ configurations {
 }
 
 dependencies {
+    compile 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
+
     compile 'org.eclipse.jetty:jetty-servlet:7.5.3.v20111011'
     compile 'javax.servlet:servlet-api:2.5'
 
