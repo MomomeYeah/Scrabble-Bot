@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <title>ROBot</title>
@@ -12,6 +11,7 @@
                     <h1>Scrabbulator 4000</h1>
                     <p>This is the home page of the incredible Scrabble-playing robot.  His name is Scrabbulator 4000 and he shows no mercy.</p>
                     <p>Requests from <a href="https://www.merknera.com/" target="_blank">Merknera</a> are POSTed to /bot, and Scrabbulator 4000 responds.</p>
+                        
                 </div>
                 <div class="footer-section">
                     <p class="footer">Made by <a href="https://github.com/MomomeYeah" target="_blank">Rob Gwynn-Jones</a></p>

@@ -3,7 +3,7 @@ apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'war'
 
-mainClassName = 'solver.Solver'
+mainClassName = 'server.BotServer'
 
 repositories {
     mavenCentral()
@@ -33,7 +33,7 @@ war {
     manifest {
         attributes(
             'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-            'Main-Class': 'solver.Solver'
+            'Main-Class': 'server.BotServer'
         )
     }
 }
