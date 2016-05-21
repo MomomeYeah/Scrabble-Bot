@@ -15,9 +15,12 @@ configurations {
 
 dependencies {
     compile 'org.fusesource.leveldbjni:leveldbjni-all:1.8'
-
-    compile 'org.eclipse.jetty:jetty-servlet:7.5.3.v20111011'
     compile 'javax.servlet:servlet-api:2.5'
+
+    compile 'org.eclipse.jetty:jetty-annotations:9.3.8.v20160314'
+    compile 'org.eclipse.jetty:jetty-webapp:9.3.8.v20160314'
+    compile 'org.eclipse.jetty:apache-jsp:9.3.9.v20160517'
+    compile 'org.eclipse.jetty:apache-jstl:9.3.9.v20160517'
 
     compile "org.apache.commons:commons-io:1.3.2"
     compile "com.thetransactioncompany:jsonrpc2-base:1.34.4"
@@ -29,6 +32,7 @@ war {
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 
     manifest {
         attributes(

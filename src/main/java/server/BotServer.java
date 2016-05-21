@@ -1,7 +1,12 @@
 package server;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,9 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.apache.tomcat.InstanceManager;
+import org.apache.tomcat.SimpleInstanceManager;
+import org.eclipse.jetty.annotations.ServletContainerInitializersStarter;
+import org.eclipse.jetty.apache.jsp.JettyJasperInitializer;
+import org.eclipse.jetty.jsp.JettyJspServlet;
+import org.eclipse.jetty.plus.annotation.ContainerInitializer;
 
 import config.ConfigFactory;
 import config.IConfig;
@@ -59,6 +70,57 @@ public class BotServer extends HttpServlet {
 		resp.getWriter().print(response);
     }
 	
+	/**
+     * Establish Scratch directory for the servlet context (used by JSP compilation)
+     */
+    private static File getScratchDir() throws IOException {
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File scratchDir = new File(tempDir.toString(), "embedded-jetty-jsp");
+
+        if (!scratchDir.exists())
+        {
+            if (!scratchDir.mkdirs())
+            {
+                throw new IOException("Unable to create scratch directory: " + scratchDir);
+            }
+        }
+        return scratchDir;
+    }
+    
+    /**
+     * Ensure the jsp engine is initialized correctly
+     */
+    private static List<ContainerInitializer> jspInitializers()
+    {
+        JettyJasperInitializer sci = new JettyJasperInitializer();
+        ContainerInitializer initializer = new ContainerInitializer(sci, null);
+        List<ContainerInitializer> initializers = new ArrayList<ContainerInitializer>();
+        initializers.add(initializer);
+        return initializers;
+    }
+    
+    private static ClassLoader getUrlClassLoader()
+    {
+        ClassLoader jspClassLoader = new URLClassLoader(new URL[0], BotServer.class.getClassLoader());
+        return jspClassLoader;
+    }
+    
+    /**
+     * Create JSP Servlet (must be named "jsp")
+     */
+    private static ServletHolder jspServletHolder()
+    {
+        ServletHolder holderJsp = new ServletHolder("jsp", JettyJspServlet.class);
+        holderJsp.setInitOrder(0);
+        holderJsp.setInitParameter("logVerbosityLevel", "DEBUG");
+        holderJsp.setInitParameter("fork", "false");
+        holderJsp.setInitParameter("xpoweredBy", "false");
+        holderJsp.setInitParameter("compilerTargetVM", "1.7");
+        holderJsp.setInitParameter("compilerSourceVM", "1.7");
+        holderJsp.setInitParameter("keepgenerated", "true");
+        return holderJsp;
+    }
+	
 	public static void main(String args[]) throws Exception {
 		BotServer bs = new BotServer();
 		
@@ -66,11 +128,22 @@ public class BotServer extends HttpServlet {
 		
 		Server server = new Server(Integer.valueOf(bs.config.getInteger("PORT")));
 		
-		// set up resource handler for static pages
-		ResourceHandler resourceHandler = new ResourceHandler();
-		resourceHandler.setDirectoriesListed(false);
-		resourceHandler.setWelcomeFiles(new String[]{ "index.html" });
-		resourceHandler.setResourceBase("src/main/webapp");
+		System.setProperty("org.apache.jasper.compiler.disablejsr199", "false");
+		
+		// https://github.com/jetty-project/embedded-jetty-jsp
+		WebAppContext webAppContext = new WebAppContext();
+		webAppContext.setContextPath("/");
+		
+		webAppContext.setAttribute("javax.servlet.context.tempdir", BotServer.getScratchDir());
+		webAppContext.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+          ".*/[^/]*servlet-api-[^/]*\\.jar$|.*/javax.servlet.jsp.jstl-.*\\.jar$|.*/.*taglibs.*\\.jar$");
+		webAppContext.setResourceBase("src/main/webapp");
+		webAppContext.setAttribute("org.eclipse.jetty.containerInitializers", jspInitializers());
+		webAppContext.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
+		webAppContext.addBean(new ServletContainerInitializersStarter(webAppContext), true);
+		webAppContext.setClassLoader(getUrlClassLoader());
+
+		webAppContext.addServlet(jspServletHolder(), "*.jsp");
 		
 		// set up servlet context for bot
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -79,7 +152,7 @@ public class BotServer extends HttpServlet {
         
         // add static resource handler and servlet context to handler list
         HandlerList hl = new HandlerList();
-		hl.addHandler(resourceHandler);
+        hl.addHandler(webAppContext);
 		hl.addHandler(context);
 		
 		// start server using resource handler and servlet

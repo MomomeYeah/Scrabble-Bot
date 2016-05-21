@@ -22,7 +22,8 @@ body {
 }
 
 .main-section {
-    height: 140px;
+    //height: 140px;
+    height: 360px;
     padding: 2em;
 }
 
