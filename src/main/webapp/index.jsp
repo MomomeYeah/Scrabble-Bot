@@ -2,7 +2,7 @@
 <%@ page import="game.Board" %>
 <html>
     <head>
-        <title>ROBot</title>
+        <title>Scrabbulator 4000</title>
 
         <link rel="stylesheet" type="text/css" href="scrabble.css">
     </head>
