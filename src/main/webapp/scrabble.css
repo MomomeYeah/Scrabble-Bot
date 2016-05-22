@@ -23,7 +23,7 @@ body {
 
 .main-section {
     /*height: 140px;*/
-    height: 390px;
+    height: 480px;
     padding: 2em;
 }
 
@@ -42,4 +42,39 @@ p.footer {
 div.board {
     text-align: center;
     width: 100%;
+}
+
+span.board-part {
+    border: 1px solid black;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+}
+
+span.placement {
+    background-color: #ff0066;
+}
+
+span.cellTW {
+    background-color: red;
+}
+
+span.cellDW {
+    background-color: pink;
+}
+
+span.cellTL {
+    background-color: blue;
+}
+
+span.cellDL {
+    background-color: aqua;
+}
+
+span.cell {
+    background-color: #009933;
+}
+
+span.tile {
+    background-color: #ffcc00;
 }

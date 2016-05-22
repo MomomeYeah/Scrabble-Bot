@@ -21,22 +21,46 @@ if (jsonText.trim() != "null") {
         var boardLine = "";
         for (var j = 0; j < 15; j++) {
             cell = board[(i * 15) + j];
+
+            var span = document.createElement("span");
+            span.className = 'board-part';
             //console.log(JSON.stringify(cell));
             if (placement.row == i && placement.column == j) {
-                boardLine += placement.tile.letter + "*";
+                span.className += ' placement';
+                span.innerHTML = placement.tile.letter;
                 if (placementNum < placements.length - 1) {
                     placement = placements[++placementNum];
                 }
             } else if (cell.cell != undefined) {
                 var cellType = cell.cell;
                 //console.log(cellType);
-                boardLine += cellType;
+                switch (cellType) {
+                    case 'TL':  span.className += ' cellTL';
+                                span.innerHTML = cellType;
+                                break;
+                    case 'DL':  span.className += ' cellDL';
+                                span.innerHTML = cellType;
+                                break;
+                    case 'TW':  span.className += ' cellTW';
+                                span.innerHTML = cellType;
+                                break;
+                    case 'DW':  span.className += ' cellDW';
+                                span.innerHTML = cellType;
+                                break;
+                    default:    span.className += ' cell';
+                                span.innerHTML = '&nbsp;'
+                                break;
+                }
             } else {
                 //console.log(cell.tile.letter);
-                boardLine += cell.tile.letter + " ";
+                span.className += ' tile';
+                span.innerHTML = cell.tile.letter;
             }
+
+            boardDiv.appendChild(span);
         }
-        boardDiv.innerHTML += boardLine + "<br/>";
+        var br = document.createElement("br");
+        boardDiv.appendChild(br);
     }
 } else {
     //console.log("No move found");
