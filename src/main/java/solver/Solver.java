@@ -17,14 +17,13 @@ public class Solver {
 	
 	public static Move getFirstMove(Board b, ArrayList<Tile> hand, PlayDirection direction) throws InvalidMoveException, ScrabbleException {
 		ArrayList<TilePlacement> placements = new ArrayList<TilePlacement>();
-		Move move = new Move(placements, direction);
+		Move move = new Move(placements, direction, -1);
 		
 		ArrayList<ArrayList<Tile>> words = b.trie.getWords(hand);
 
 		int row = b.boardsize / 2;
 		int column = b.boardsize / 2;
 		int score = 0;
-		int bestScore = 0;
 		
 		// for every word that we found...
 		for (ArrayList<Tile> word : words) {	
@@ -44,11 +43,10 @@ public class Solver {
 				score = b.getScore(testPlacements, direction);
 				
 				// if this is the highest score so far, record this
-				if (score > bestScore) {
-					bestScore = score;
+				if (score > move.score) {
 					placements.clear();
 					placements.addAll(testPlacements);
-					move.setMove(placements, direction);
+					move.setMove(placements, direction, score);
 				}
 				
 			}
@@ -138,10 +136,9 @@ public class Solver {
 		ArrayList<TilePlacement> placements = new ArrayList<TilePlacement>();
 		PlayDirection direction = PlayDirection.ACROSS;
 		
-		Move move = new Move(placements, direction);
+		Move move = new Move(placements, direction, -1);
 		
 		int score = 0;
-		int bestScore = 0;
 		Node rootNode = b.trie.root;
 		
 		// for each anchor on the board
@@ -200,11 +197,10 @@ public class Solver {
 						score = b.getScore(word, direction);
 						
 						// if this is the highest score so far, record this
-						if (score > bestScore) {
-							bestScore = score;
+						if (score > move.score) {
 							placements.clear();
 							placements.addAll(word);
-							move.setMove(placements, direction);
+							move.setMove(placements, direction, score);
 						}
 					} catch (InvalidMoveException e) {
 						// TODO - what to do with words that don't intersect?  
@@ -284,11 +280,10 @@ public class Solver {
 						score = b.getScore(word, direction);
 						
 						// if this is the highest score so far, record this
-						if (score > bestScore) {
-							bestScore = score;
+						if (score > move.score) {
 							placements.clear();
 							placements.addAll(word);
-							move.setMove(placements, direction);
+							move.setMove(placements, direction, score);
 						}
 					} catch (InvalidMoveException e) {
 						// TODO - what to do with words that don't intersect?  

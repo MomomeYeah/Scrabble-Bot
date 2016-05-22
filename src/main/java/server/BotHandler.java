@@ -16,8 +16,11 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2ParseException;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+import db.TopScores;
 import game.Board;
 import game.InvalidMoveException;
+import game.Move;
+import game.PlayDirection;
 import game.ScrabbleException;
 import game.Tile;
 import net.minidev.json.JSONArray;
@@ -32,22 +35,59 @@ public class BotHandler {
 		return params;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Object handleScrabbleNextMove(JSONRPC2Request reqIn) throws IOException, ScrabbleException, InvalidMoveException {
 		Map<String,Object> namedParams = reqIn.getNamedParams();
 		
-		JSONArray ja = (JSONArray) namedParams.get("gamestate");
+		// get the current state of the Board
+		JSONArray gamestateJSON = (JSONArray) namedParams.get("gamestate");
 		ArrayList<String> gameState = new ArrayList<String>();
-		for (int i = 0; i < ja.size(); i++) {
-			String mark = (String) ja.get(i);
+		for (int i = 0; i < gamestateJSON.size(); i++) {
+			String mark = (String) gamestateJSON.get(i);
 			String finalMark = mark.equals("X") || mark.equals("O") ? mark : null;
 			gameState.add(finalMark);
 		}
-		
+		// construct Board object
 		Board b = new Board();
-		ArrayList<Tile> hand = new ArrayList<Tile>();
 		
+		// get the current state of our Hand
+		JSONArray handJSON = (JSONArray) namedParams.get("hand");
+		ArrayList<Tile> hand = new ArrayList<Tile>();
+		for (int i = 0; i < handJSON.size(); i++) {
+			Map<String,Object> tile = (Map<String,Object>) handJSON.get(i);
+			hand.add(new Tile((char) tile.get("letter"), (int) tile.get("points")));
+		}
+		
+		// get the number of Tiles remaining 
+		int tilesRemaining = Integer.parseInt((String) namedParams.get("tilesRemaining"));
+		
+		// determine best Move
+		Move move = null;
+		if (b.wordsPlayed) {
+			move = Solver.getMove(b, hand);
+		} else {
+			move = Solver.getFirstMove(b, hand, PlayDirection.ACROSS);
+		}
+		
+		// determine what we should do based on best available Move
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("position", Solver.getMove(b, hand));
+		if (move.score == -1) {
+			if (tilesRemaining == 0) {
+				// no move found and no tiles available to exchange
+				// just PASS
+			} else {
+				// int tilesToExchange = Math.min(hand.size(), tilesRemaining);
+				// no move found but there are tiles available to exchange
+				// EXCHANGE tilesToExchange tiles
+			}
+		} else {
+			// add this move to the DB
+			TopScores ts = new TopScores();
+			ts.addKey(move.score, move.placements + ":" + b.toString());
+			
+			// return this move
+			params.put("position", move);
+		}
 		
 		return params;
 	}
