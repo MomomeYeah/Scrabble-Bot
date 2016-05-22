@@ -143,6 +143,8 @@ public class TopScores {
 	
 	public static void main(String args[]) throws IOException {
 		createDB();
+		//TopScores ts = new TopScores();
+		//ts.deleteAll();
 		
 		DBIterator iterator = db.iterator();
 		

@@ -15,12 +15,22 @@
                     <p>Requests from <a href="https://www.merknera.com/" target="_blank">Merknera</a> are POSTed to /bot, and Scrabbulator 4000 responds.</p>
                     <%
                     TopScores ts = new TopScores();
-                    String topScoreValue = ts.get(ts.getTopScore());
+                    String topScoreKey = ts.getTopScore();
+                    String topScoreValue = null;
+                    if (topScoreKey != null) {
+                        topScoreValue = ts.get(topScoreKey);
+                    }
                     %>
                     <p id="topScoreValue" style="display: none;">
                         <%= topScoreValue %>
                     </p>
-                    <p>Shown below is the highest scoring move so far, worth <span id="topMoveScore"></span> points.</p>
+                    <p>
+                        <% if (topScoreValue != null) { %>
+                            Shown below is the highest scoring move so far, worth <span id="topMoveScore"></span> points.</p>
+                        <% } else { %>
+                            No moves have been made yet.  Watch this space!
+                        <% } %>
+                    </p>
                     <div id="board" class="board"></div>
                 </div>
                 <div class="footer-section">
