@@ -24,6 +24,14 @@ public class TopScores {
 		db = factory.open(new File("src/main/database/db"), options);
 	}
 	
+	public void closeDB() throws IOException {
+		db.close();
+	}
+	
+	public DBIterator getIterator() {
+		return db.iterator();
+	}
+	
 	private void put(Integer key, String value) {
 		db.put(bytes(key.toString()), bytes(value));
 	}
@@ -87,6 +95,28 @@ public class TopScores {
 		return leastKey;
 	}
 	
+	public String getTopScore() throws IOException {
+		DBIterator iterator = db.iterator();
+		
+		String topScore = null;
+		int topScoreAsInt = Integer.MIN_VALUE;
+		try {
+			for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+				String key = asString(iterator.peekNext().getKey());
+				int keyAsInt = Integer.parseInt(key);
+				
+				if (keyAsInt > topScoreAsInt) {
+					topScore = key;
+					topScoreAsInt = keyAsInt;
+				}
+			}
+		} finally {
+			iterator.close();
+		}
+		
+		return topScore;
+	}
+	
 	// TODO - if the same key is added a second time with a different value, 
 	//        the first will be overwritten.  This is intended behaviour, but 
 	//        not great for storing scores.  Find a different way to store keys 
@@ -112,9 +142,22 @@ public class TopScores {
 	}
 	
 	public static void main(String args[]) throws IOException {
-		TopScores ts = new TopScores();
-		ts.deleteAll();
+		createDB();
 		
+		DBIterator iterator = db.iterator();
+		
+		try {
+			for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+				String key = asString(iterator.peekNext().getKey());
+				String value = asString(iterator.peekNext().getValue());
+				System.out.println(Integer.parseInt(key) + ": " + value);
+			}
+		} finally {
+			iterator.close();
+			db.close();
+		}
+		
+		/*ts.deleteAll();
 		try {
 			ts.addKey(10, "NoPenis");
 			ts.addKey(20, "HugePenis");
@@ -147,6 +190,7 @@ public class TopScores {
 		} finally {
 			db.close();
 		}
+		*/
 	}
 
 }

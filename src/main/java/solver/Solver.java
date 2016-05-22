@@ -3,6 +3,7 @@ package solver;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import db.TopScores;
 import game.Bag;
 import game.Board;
 import game.Cell;
@@ -448,6 +449,15 @@ public class Solver {
 		obj.put("move", move.toJSON());
 		obj.put("board", board.toJSON());
 		System.out.println(obj.toJSONString());
+		
+		TopScores ts = null;
+		try {
+			ts = new TopScores();
+			ts.addKey(move.score, obj);
+		}
+		finally {
+			ts.closeDB();
+		}
 		
 	}
 

@@ -22,8 +22,8 @@ body {
 }
 
 .main-section {
-    //height: 140px;
-    height: 360px;
+    /*height: 140px;*/
+    height: 390px;
     padding: 2em;
 }
 
@@ -36,4 +36,10 @@ body {
 p.footer {
     font-size: 0.9em;
     font-style: italic;
+}
+
+/* board styles */
+div.board {
+    text-align: center;
+    width: 100%;
 }

@@ -87,8 +87,14 @@ public class BotHandler {
 			obj.put("board", b.toJSON());
 			
 			// add this move to the DB
-			TopScores ts = new TopScores();
-			ts.addKey(move.score, obj);
+			TopScores ts = null;
+			try {
+				ts = new TopScores();
+				ts.addKey(move.score, obj);
+			}
+			finally {
+				ts.closeDB();
+			}
 			
 			// return this move
 			params.put("position", move);

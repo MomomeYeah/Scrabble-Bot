@@ -1,25 +1,51 @@
 package db;
 
+import static org.fusesource.leveldbjni.JniDBFactory.asString;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.iq80.leveldb.DBIterator;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TopScoresTest {
 	
+	public static Map<String,String> tsBackup;
 	public static TopScores ts;
 	
 	@BeforeClass
 	public static void beforeClass() throws IOException {
 		ts = new TopScores();
+		tsBackup = new HashMap<String,String>();
+		DBIterator iterator = ts.getIterator();
+		try {
+			for (iterator.seekToFirst(); iterator.hasNext(); iterator.next()) {
+				Entry<byte[], byte[]> next = iterator.peekNext();
+				tsBackup.put(asString(next.getKey()), asString(next.getValue()));
+			}
+		} finally {
+			iterator.close();
+		}
 	}
 	
 	@Before
 	public void clearScores() throws IOException {
 		ts.deleteAll();
+	}
+	
+	@AfterClass
+	public static void restoreScores() throws IOException {
+		ts.deleteAll();
+		for (Entry<String,String> entry : tsBackup.entrySet()) {
+			ts.addKey(Integer.parseInt(entry.getKey()), entry.getValue());
+		}
+		ts.closeDB();
 	}
 
 	@Test

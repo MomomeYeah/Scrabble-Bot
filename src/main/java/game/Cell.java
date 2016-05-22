@@ -43,7 +43,7 @@ public class Cell {
 		if (this.hasTile) {
 			obj.put("tile", this.tile.toJSON());
 		} else {
-			obj.put("cell", this.celltype);
+			obj.put("cell", this.celltype.toString());
 		}
 		
 		return obj;

@@ -27,16 +27,19 @@ import org.eclipse.jetty.plus.annotation.ContainerInitializer;
 
 import config.ConfigFactory;
 import config.IConfig;
+import db.TopScores;
 
 //https://github.com/jetty-project/embedded-jetty-jsp
 public class BotServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private IConfig config;
+	TopScores topScoresDB;
 	Server server;
 	
 	public BotServer() throws Exception {
 		this.config = ConfigFactory.getConfig();
+		this.topScoresDB = new TopScores();
 		
 		this.server = new Server(Integer.valueOf(this.config.getInteger("PORT")));
 		
@@ -161,8 +164,12 @@ public class BotServer extends HttpServlet {
 			System.out.println(e.getMessage());
 			server.stop();
 		}*/
-		
-        bs.server.join();
+		try {
+			bs.server.join();
+		}
+		finally {
+			bs.topScoresDB.closeDB();
+		}
 		
 	}
 	
