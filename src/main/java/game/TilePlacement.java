@@ -2,6 +2,8 @@ package game;
 
 import java.util.ArrayList;
 
+import net.minidev.json.JSONObject;
+
 public class TilePlacement {
 	
 	public Tile tile;
@@ -34,6 +36,15 @@ public class TilePlacement {
 		}
 		
 		return placements;
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		obj.put("tile", this.tile.toJSON());
+		obj.put("row", this.row);
+		obj.put("column", this.column);
+			
+		return obj;
 	}
 
 }

@@ -2,6 +2,8 @@ package game;
 
 import java.util.ArrayList;
 
+import net.minidev.json.JSONObject;
+
 public class Cell {
 	
 	private int row;
@@ -34,6 +36,17 @@ public class Cell {
 		this.isAnchor = false;
 		this.validCrossChecksAcross.clear();
 		this.validCrossChecksDown.clear();
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject obj = new JSONObject();
+		if (this.hasTile) {
+			obj.put("tile", this.tile.toJSON());
+		} else {
+			obj.put("cell", this.celltype);
+		}
+		
+		return obj;
 	}
 	
 	public int getRow() {

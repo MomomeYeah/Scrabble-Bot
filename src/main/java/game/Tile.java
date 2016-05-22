@@ -2,6 +2,8 @@ package game;
 
 import java.util.ArrayList;
 
+import net.minidev.json.JSONObject;
+
 public class Tile {
 	
 	public static final char blank = ' ';
@@ -88,6 +90,17 @@ public class Tile {
 	
 	public String toString() {
 		return this.letter + " - " + this.points;
+	}
+	
+	public JSONObject toJSON() {
+		// implicitly cast this.letter to String
+		// if we leave it as char, seems to come out as empty object
+		JSONObject obj = new JSONObject();
+		obj.put("letter", this.letter+"");
+		obj.put("points", this.points);
+		obj.put("isBlank", this.isBlank);
+		
+		return obj;
 	}
 	
 	public void print() {

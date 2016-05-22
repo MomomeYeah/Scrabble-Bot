@@ -1,6 +1,9 @@
 package db;
 
 import org.iq80.leveldb.*;
+
+import net.minidev.json.JSONObject;
+
 import static org.fusesource.leveldbjni.JniDBFactory.*;
 import java.io.*;
 
@@ -84,6 +87,11 @@ public class TopScores {
 		return leastKey;
 	}
 	
+	// TODO - if the same key is added a second time with a different value, 
+	//        the first will be overwritten.  This is intended behaviour, but 
+	//        not great for storing scores.  Find a different way to store keys 
+	//        where we can have two different moves with the same score in the 
+	//        high score list.
 	public void addKey(int key, String value) throws IOException {
 		if (this.getRecordCount() < maxDBSize) {
 			this.put(key, value);
@@ -96,6 +104,11 @@ public class TopScores {
 				this.put(key, value);
 			}
 		}
+	}
+	
+	public void addKey(int key, JSONObject value) throws IOException {
+		String objString = value.toJSONString();
+		this.addKey(key, objString);
 	}
 	
 	public static void main(String args[]) throws IOException {

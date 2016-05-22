@@ -20,10 +20,10 @@ import db.TopScores;
 import game.Board;
 import game.InvalidMoveException;
 import game.Move;
-import game.PlayDirection;
 import game.ScrabbleException;
 import game.Tile;
 import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import solver.Solver;
 
 public class BotHandler {
@@ -66,7 +66,7 @@ public class BotHandler {
 		if (b.wordsPlayed) {
 			move = Solver.getMove(b, hand);
 		} else {
-			move = Solver.getFirstMove(b, hand, PlayDirection.ACROSS);
+			move = Solver.getFirstMove(b, hand);
 		}
 		
 		// determine what we should do based on best available Move
@@ -81,9 +81,14 @@ public class BotHandler {
 				// EXCHANGE tilesToExchange tiles
 			}
 		} else {
+			// get JSONObject for combined Move + Board
+			JSONObject obj = new JSONObject();
+			obj.put("move", move.toJSON());
+			obj.put("board", b.toJSON());
+			
 			// add this move to the DB
 			TopScores ts = new TopScores();
-			ts.addKey(move.score, move.placements + ":" + b.toString());
+			ts.addKey(move.score, obj);
 			
 			// return this move
 			params.put("position", move);

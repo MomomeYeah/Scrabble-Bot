@@ -12,8 +12,13 @@ import game.PlayDirection;
 import game.ScrabbleException;
 import game.Tile;
 import game.TilePlacement;
+import net.minidev.json.JSONObject;
 
 public class Solver {
+	
+	public static Move getFirstMove(Board b, ArrayList<Tile> hand) throws InvalidMoveException, ScrabbleException {
+		return Solver.getFirstMove(b, hand, PlayDirection.ACROSS);
+	}
 	
 	public static Move getFirstMove(Board b, ArrayList<Tile> hand, PlayDirection direction) throws InvalidMoveException, ScrabbleException {
 		ArrayList<TilePlacement> placements = new ArrayList<TilePlacement>();
@@ -438,6 +443,11 @@ public class Solver {
 			}
 			
 		}
+		
+		JSONObject obj = new JSONObject();
+		obj.put("move", move.toJSON());
+		obj.put("board", board.toJSON());
+		System.out.println(obj.toJSONString());
 		
 	}
 

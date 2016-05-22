@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import net.minidev.json.JSONArray;
 import solver.Trie;
 
 public class Board {
@@ -96,6 +97,17 @@ public class Board {
 	
 	public void print() {
 		System.out.println(this.toString());
+	}
+	
+	public JSONArray toJSON() {
+		JSONArray arr = new JSONArray();
+		for (int row = 0; row < this.boardsize; row++) {
+			for (int column = 0; column < this.boardsize; column++) {
+				arr.add(this.cells[row][column].toJSON());
+			}
+		}
+		
+		return arr;
 	}
 	
 	public boolean inBounds(int row, int column) {
