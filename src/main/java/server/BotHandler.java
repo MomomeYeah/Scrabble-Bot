@@ -36,7 +36,7 @@ public class BotHandler {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static Object handleScrabbleNextMove(JSONRPC2Request reqIn) throws IOException, ScrabbleException, InvalidMoveException {
+	public static Object handleScrabbleNextMove(JSONRPC2Request reqIn, Board board) throws IOException, ScrabbleException, InvalidMoveException {
 		Map<String,Object> namedParams = reqIn.getNamedParams();
 		
 		// get the current state of the Board
@@ -47,8 +47,8 @@ public class BotHandler {
 			String finalMark = mark.equals("X") || mark.equals("O") ? mark : null;
 			gameState.add(finalMark);
 		}
-		// construct Board object
-		Board b = new Board();
+		// load board with supplied gamestate
+		//board.load(gameState);
 		
 		// get the current state of our Hand
 		JSONArray handJSON = (JSONArray) namedParams.get("hand");
@@ -63,10 +63,10 @@ public class BotHandler {
 		
 		// determine best Move
 		Move move = null;
-		if (b.wordsPlayed) {
-			move = Solver.getMove(b, hand);
+		if (board.wordsPlayed) {
+			move = Solver.getMove(board, hand);
 		} else {
-			move = Solver.getFirstMove(b, hand);
+			move = Solver.getFirstMove(board, hand);
 		}
 		
 		// determine what we should do based on best available Move
@@ -84,21 +84,19 @@ public class BotHandler {
 			// get JSONObject for combined Move + Board
 			JSONObject obj = new JSONObject();
 			obj.put("move", move.toJSON());
-			obj.put("board", b.toJSON());
+			obj.put("board", board.toJSON());
 			
 			// add this move to the DB
-			TopScores ts = null;
-			try {
-				ts = new TopScores();
-				ts.addKey(move.score, obj);
-			}
-			finally {
-				ts.closeDB();
-			}
+			// DB should be initialised by BotServer
+			TopScores ts = new TopScores();
+			ts.addKey(move.score, obj);
 			
 			// return this move
 			params.put("position", move);
 		}
+		
+		// reset board
+		board.reset();
 		
 		return params;
 	}
@@ -124,7 +122,7 @@ public class BotHandler {
 		return params;
 	}
 	
-	public static String parseRequest(String requestString) {
+	public static String parseRequest(String requestString, Board board) {
 		JSONRPC2Request reqIn = null;
 		try {
 			reqIn = JSONRPC2Request.parse(requestString);
@@ -139,7 +137,7 @@ public class BotHandler {
 			respOut = new JSONRPC2Response(handleStatusPing(reqIn), reqIn.getID());
 		} else if (method.equals("Scrabble.NextMove")) {
 			try {
-				respOut = new JSONRPC2Response(handleScrabbleNextMove(reqIn), reqIn.getID());
+				respOut = new JSONRPC2Response(handleScrabbleNextMove(reqIn, board), reqIn.getID());
 			} catch (Exception e) {
 				respOut = new JSONRPC2Response(getErrorJSON(), reqIn.getID());
 			}
@@ -154,7 +152,7 @@ public class BotHandler {
 		return respOut.toString();
 	}
 	
-	public static String handle(HttpServletRequest req) throws IOException {
+	public static String handle(HttpServletRequest req, Board board) throws IOException {
 		
 		// get request body
 		InputStream requestBodyStream = req.getInputStream();
@@ -163,7 +161,7 @@ public class BotHandler {
 		String requestBody = writer.toString();
 		
 		// get response
-		String responseString = parseRequest(requestBody);
+		String responseString = parseRequest(requestBody, board);
 
 		return responseString;
 		

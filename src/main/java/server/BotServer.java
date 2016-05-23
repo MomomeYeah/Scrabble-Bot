@@ -28,17 +28,20 @@ import org.eclipse.jetty.plus.annotation.ContainerInitializer;
 import config.ConfigFactory;
 import config.IConfig;
 import db.TopScores;
+import game.Board;
 
 //https://github.com/jetty-project/embedded-jetty-jsp
 public class BotServer extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private IConfig config;
-	TopScores topScoresDB;
-	Server server;
+	private Board board;
+	private TopScores topScoresDB;
+	private Server server;
 	
 	public BotServer() throws Exception {
 		this.config = ConfigFactory.getConfig();
+		this.board = new Board();
 		this.topScoresDB = new TopScores();
 		
 		this.server = new Server(Integer.valueOf(this.config.getInteger("PORT")));
@@ -96,7 +99,7 @@ public class BotServer extends HttpServlet {
     }
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String response = BotHandler.handle(req);
+        String response = BotHandler.handle(req, this.board);
 		resp.getWriter().print(response);
     }
 	
