@@ -3,6 +3,8 @@ var jsonText = document.getElementById("topScoreValue").innerHTML;
 if (jsonText.trim() != "null") {
     var json = JSON.parse(jsonText);
 
+    var showTopScore = document.getElementById("show-top-score");
+    var modalContainer = document.getElementById("modal-container");
     var boardDiv = document.getElementById("board");
 
     var move = json.move;
@@ -61,6 +63,14 @@ if (jsonText.trim() != "null") {
         }
         var br = document.createElement("br");
         boardDiv.appendChild(br);
+    }
+
+    showTopScore.onclick = function() {
+        modalContainer.style.display = "block";
+    }
+
+    boardDiv.onclick = function() {
+        modalContainer.style.display = "none";
     }
 } else {
     //console.log("No move found");
